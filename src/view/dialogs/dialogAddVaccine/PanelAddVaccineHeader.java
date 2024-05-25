@@ -1,4 +1,4 @@
-package view.dialogs.dialogWindowAddVaccine;
+package view.dialogs.dialogAddVaccine;
 
 import java.awt.Dimension;
 import javax.swing.JLabel;

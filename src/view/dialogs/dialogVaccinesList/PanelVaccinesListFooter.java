@@ -7,7 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import view.GlobalConfigView;
 import view.buttons.RoundedBorderButton;
-import view.dialogs.dialogWindowAddVaccine.DialogAddVaccineManager;
+import view.dialogs.dialogAddVaccine.DialogAddVaccineManager;
 
 public class PanelVaccinesListFooter extends JPanel{
 
@@ -42,8 +42,8 @@ public class PanelVaccinesListFooter extends JPanel{
         this.add(buttonSaveApointment);
     }
 
-    private void createDialogAddVaccine() {
-        DialogAddVaccineManager emergentWindowAddVaccine = new DialogAddVaccineManager(this);
-        emergentWindowAddVaccine.begin();
+    public void createDialogAddVaccine() {
+        DialogAddVaccineManager dialogAddVaccine = new DialogAddVaccineManager(this);
+        dialogAddVaccine.begin();
     }
 }

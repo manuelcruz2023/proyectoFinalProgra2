@@ -53,4 +53,7 @@ public class DialogVaccinesListManager extends JDialog{
         addBody();
         addFooter();
     }
+    public void getListVaccine() {
+        //panelMainFooter.dialogVaccinesListManager.panelVaccinesListFooter.
+    }
 }

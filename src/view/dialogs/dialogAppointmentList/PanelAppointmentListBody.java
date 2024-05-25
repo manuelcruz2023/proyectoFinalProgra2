@@ -1,6 +1,8 @@
 package view.dialogs.dialogAppointmentList;
 
 import java.awt.Dimension;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -9,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import com.toedter.calendar.JDateChooser;
 import pojos.Appointment;
 import view.GlobalConfigView;
 import view.dialogs.dialogApplyVacine.DialogApplyVacineManager;
@@ -32,7 +35,7 @@ public class PanelAppointmentListBody extends JPanel {
 
     private void initPanel() {
         this.setBackground(GlobalConfigView.BODY_BACKGROUND_COLOR);
-        this.setPreferredSize(new Dimension(800, 440));
+        this.setPreferredSize(new Dimension(1000, 440));
     }
 
     public void begin() {
@@ -54,7 +57,7 @@ public class PanelAppointmentListBody extends JPanel {
         defaultTableModel.addColumn("Vacunas aplicadas");
         table = new JTable(defaultTableModel);
         scrollPane = new JScrollPane(table);
-        scrollPane.setPreferredSize(new Dimension(700, 400));
+        scrollPane.setPreferredSize(new Dimension(900, 390));
         add(scrollPane);
     }
 
@@ -74,11 +77,16 @@ public class PanelAppointmentListBody extends JPanel {
         }
     }
 
+    public void getDates() {
+        JDateChooser jDateChooser = dialogAppointmentListManager.panelMainFooter.dialogAppointmentManager.panelAppointmentPanelBody.jDateChooser;
+        LocalDate appointmentDate = LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(jDateChooser.getDate()));
+        //JDateChooser jDateChooser2 = 
+        
+    }
     private void addMouseListener() {
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (SwingUtilities.isRightMouseButton(evt)) {
-                    System.out.println("Right click");
                     createPopupMenu();
                 }
             }

@@ -38,7 +38,7 @@ public class DialogApplyVacineManager extends JDialog{
     }
 
     private void createBody() {
-        panelApplyVacineBody = new PanelApplyVacineBody();
+        panelApplyVacineBody = new PanelApplyVacineBody(this);
         this.add(panelApplyVacineBody, BorderLayout.CENTER);
     }
 

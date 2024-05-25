@@ -23,7 +23,7 @@ public class DialogAppointmentListManager extends JDialog {
 
     private void initDialog() {
         this.setTitle("Lista de citas");
-        this.setSize(800, 600);
+        this.setSize(1000, 600);
         this.setLocationRelativeTo(panelMainFooter.mainView);
         this.setLayout(new BorderLayout());
         this.setResizable(false);

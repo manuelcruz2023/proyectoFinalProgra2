@@ -52,6 +52,7 @@ public class PanelMainFooter extends JPanel {
         roundButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createDialogVaccinesList();
+                beginDialogVaccineList();
             }
         });
         this.add(roundButton);
@@ -88,17 +89,19 @@ public class PanelMainFooter extends JPanel {
         if (dialogVaccinesListManager == null) {
             dialogVaccinesListManager = new DialogVaccinesListManager(this);
         }
-        dialogVaccinesListManager.begin();
     }
 
     public void createDialogAppointmentList() {
         if (dialogAppointmentListManager == null) {
             dialogAppointmentListManager = new DialogAppointmentListManager(this);
         }
-        //dialogAppointmentListManager.begin();
     }
 
     public void beginDialogAppointmentList() {
         dialogAppointmentListManager.begin();
+    }
+
+    public void beginDialogVaccineList() {
+        dialogVaccinesListManager.begin();
     }
 }

@@ -3,20 +3,20 @@ package pojos;
 import java.time.LocalDate;
 public class Appointment {
 
-    private LocalDate date;
+    private LocalDate appointmentDate;
     private String completename;
     private String typeDocument;
     private String documentNumber;
     private String relationship;
     private String petName;
     private String petTypeAndSex;
-    private Vaccine vaccinesApplied;
+    private String vaccinesApplied;
 
     public LocalDate getDate() {
-        return date;
+        return appointmentDate;
     }
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDate(LocalDate appointmentDate) {
+        this.appointmentDate = appointmentDate;
     }
     public String getCompletename() {
         return completename;
@@ -54,10 +54,10 @@ public class Appointment {
     public void setPetTypeAndSex(String petTypeAndSex) {
         this.petTypeAndSex = petTypeAndSex;
     }
-    public Vaccine getVaccinesApplied() {
+    public String getVaccinesApplied() {
         return vaccinesApplied;
     }
-    public void setVaccinesApplied(Vaccine vaccinesApplied) {
+    public void setVaccinesApplied(String vaccinesApplied) {
         this.vaccinesApplied = vaccinesApplied;
     }
 }

@@ -1,4 +1,4 @@
-package view.dialogs.dialogWindowAddVaccine;
+package view.dialogs.dialogAddVaccine;
 
 import javax.swing.JDialog;
 import java.awt.BorderLayout;
@@ -44,11 +44,11 @@ public class DialogAddVaccineManager extends JDialog {
     }
 
     private void createFooter() {
-        panelAddVaccineFooter = new PanelAddVaccineFooter();
+        panelAddVaccineFooter = new PanelAddVaccineFooter(this);
         this.add(panelAddVaccineFooter, BorderLayout.SOUTH);
     }
 
-    public void addPanels() {
+    private void addPanels() {
         createHeader();
         createBody();
         createFooter();

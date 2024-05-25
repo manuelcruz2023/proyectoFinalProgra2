@@ -1,14 +1,18 @@
-package view.dialogs.dialogWindowAddVaccine;
+package view.dialogs.dialogAddVaccine;
 
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.time.ZoneId;
+
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import com.toedter.calendar.JDateChooser;
+
+import pojos.Vaccine;
 import view.GlobalConfigView;
 import view.dialogs.configTextFieldView.ConfigLimitedTextField;
 import view.dialogs.configTextFieldView.ConfigTextFieldNumber;
@@ -107,5 +111,13 @@ public class PanelAddVaccineBody extends JPanel {
         createTextFieldVaccineName();
         createTextFieldSpecies();
         createTextFieldExpiryDate();
+    }
+
+    public Vaccine createVaccine() {
+        Vaccine vaccine = new Vaccine();
+        vaccine.setName(textFieldVaccineName.getText());
+        vaccine.setSpecies(comboBoxSpecies.getSelectedItem().toString());
+        vaccine.setExpiryDate("" + dateChooserExpiryDate.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        return vaccine;
     }
 }

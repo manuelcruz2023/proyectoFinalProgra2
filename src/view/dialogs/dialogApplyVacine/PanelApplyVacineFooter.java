@@ -19,4 +19,5 @@ public class PanelApplyVacineFooter extends JPanel{
     public void begin() {
         setVisible(true);
     }
+    
 }

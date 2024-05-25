@@ -30,4 +30,15 @@ public class Presenter implements Contract.Presenter{
     public void addAppointment(Appointment appointment) {
         model.addAppointmentModel(appointment);
     }
+
+    @Override
+    public List<Vaccine> loadListVaccine() {
+        List<Vaccine> list = model.getListVaccine();
+        return list;
+    }
+
+    @Override
+    public void addVaccine(Vaccine vaccine) {
+        model.addVaccineModel(vaccine);
+    }
 }
