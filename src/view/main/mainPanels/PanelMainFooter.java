@@ -65,6 +65,7 @@ public class PanelMainFooter extends JPanel {
         roundButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createDialogAppointmentList();
+                beginDialogAppointmentList();
             }
         });
         this.add(roundButton);
@@ -94,6 +95,10 @@ public class PanelMainFooter extends JPanel {
         if (dialogAppointmentListManager == null) {
             dialogAppointmentListManager = new DialogAppointmentListManager(this);
         }
+        //dialogAppointmentListManager.begin();
+    }
+
+    public void beginDialogAppointmentList() {
         dialogAppointmentListManager.begin();
     }
 }

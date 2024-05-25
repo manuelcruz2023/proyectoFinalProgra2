@@ -4,13 +4,15 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import pojos.Vaccine;
 import view.GlobalConfigView;
 
 public class PanelVaccinesListBody extends JPanel {
 
     public DialogVaccinesListManager dialogVaccinesListManager;
-    public String[] columnNames;
-    public String[][] data;
+    public DefaultTableModel defaultTableModel;
     public JTable table;
     public JScrollPane scrollPane;
 
@@ -30,13 +32,23 @@ public class PanelVaccinesListBody extends JPanel {
         setVisible(true);
     }
 
-    public void createTable() {
-        data = new String[0][4];
-        columnNames = new String[] { "Nombre de la vacuna", "Especie",
-                "Duracion (en dias)", "Fecha de vencimiento" };
-        table = new JTable(data, columnNames);
-        table.setPreferredScrollableViewportSize(new Dimension(700, 365));
-        scrollPane = new JScrollPane(table);
-        this.add(scrollPane);
+    private void createTable() {
+        defaultTableModel = new DefaultTableModel();
+        defaultTableModel.addColumn("Nombre de la vacuna");
+        defaultTableModel.addColumn("Especie");
+        defaultTableModel.addColumn("Duracion (en dias)");
+        defaultTableModel.addColumn("Fecha de vencimiento");
+        table = new JTable(defaultTableModel);
+        scrollPane = new JScrollPane();
+        add(scrollPane);
+    }
+
+    public void addVaccine(Vaccine vaccine) {
+        defaultTableModel.addRow(new Object[]{
+            vaccine.getName(),
+            vaccine.getSpecies(),
+            vaccine.getDuration(),
+            vaccine.getExpiryDate()
+        });
     }
 }

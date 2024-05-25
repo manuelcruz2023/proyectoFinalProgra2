@@ -1,6 +1,7 @@
 package view.dialogs.dialogAppointmentList;
 
 import java.awt.Dimension;
+import java.util.List;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -8,7 +9,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-
 import pojos.Appointment;
 import view.GlobalConfigView;
 import view.dialogs.dialogApplyVacine.DialogApplyVacineManager;
@@ -23,10 +23,11 @@ public class PanelAppointmentListBody extends JPanel {
 
     public PanelAppointmentListBody(DialogAppointmentListManager dialogAppointmentListManager) {
         this.dialogAppointmentListManager = dialogAppointmentListManager;
-        // this.setFont();
         initPanel();
         begin();
         createTable();
+        addMouseListener();
+        fillTableWithAppointments();
     }
 
     private void initPanel() {
@@ -38,48 +39,46 @@ public class PanelAppointmentListBody extends JPanel {
         setVisible(true);
     }
 
-    private void createTable() {
+    private List<Appointment> getListAppointments() {
+        return dialogAppointmentListManager.panelMainFooter.mainView.getPresenter().loadListAppointment();
+    }
 
-        defaultTableModel= new DefaultTableModel();
+    private void createTable() {
+        defaultTableModel = new DefaultTableModel();
         defaultTableModel.addColumn("Nombre completo del responsable");
         defaultTableModel.addColumn("Numero de documento del responsable");
         defaultTableModel.addColumn("Relacion");
         defaultTableModel.addColumn("Nombre de la mascota");
         defaultTableModel.addColumn("Especie y sexo de la mascota");
         defaultTableModel.addColumn("Fecha");
-        defaultTableModel.addColumn("Dias restantes de la vacuna");
+        defaultTableModel.addColumn("Vacunas aplicadas");
         table = new JTable(defaultTableModel);
-        scrollPane= new JScrollPane(table);
-        scrollPane.setBounds(0, 0, getWidth(),getHeight());
+        scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(700, 400));
         add(scrollPane);
-        addMouseListener();
     }
 
-    public void addAppointment(Appointment appointment) {
-        defaultTableModel.addRow(new Object[]{
-            appointment.getCompletename(), 
-            appointment.getDocumentNumber(),
-            appointment.getRelationship(), 
-            appointment.getPetName(),
-            appointment.getPetTypeAndSex(),
-            appointment.getDate()
-        });
-        
+    public void fillTableWithAppointments() {
+        List<Appointment> appointments = getListAppointments();
+        defaultTableModel.setRowCount(0);
+        for (Appointment appointment : appointments) {
+            defaultTableModel.addRow(new Object[] {
+                    appointment.getCompletename(),
+                    appointment.getDocumentNumber(),
+                    appointment.getRelationship(),
+                    appointment.getPetName(),
+                    appointment.getPetTypeAndSex(),
+                    appointment.getDate(),
+                    appointment.getVaccinesApplied()
+            });
+        }
     }
 
-    // public void addTable(Person responsible1){
-    //     defaultTableModel.addRow(new Object[]{responsible1.getName(),responsible1.getLastName(),responsible1.getTypeDocument(),
-    //         responsible1.getDocument(),responsible1.getPhoneNumber(),responsible1.getRelationship()});
-    //     tablePet.revalidate();
-    //     tablePet.repaint();
-    //     scrollTable.revalidate();
-    //     scrollTable.repaint();
-    // }
-    
     private void addMouseListener() {
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (SwingUtilities.isRightMouseButton(evt)) {
+                    System.out.println("Right click");
                     createPopupMenu();
                 }
             }
@@ -104,5 +103,12 @@ public class PanelAppointmentListBody extends JPanel {
     private void createDialogApplyVacine() {
         DialogApplyVacineManager dialogApplyVacineManager = new DialogApplyVacineManager(this);
         dialogApplyVacineManager.begin();
+    }
+
+    public void removeAppointment() {
+        int row = table.getSelectedRow();
+        if (row != -1) {
+            defaultTableModel.removeRow(row);
+        }
     }
 }

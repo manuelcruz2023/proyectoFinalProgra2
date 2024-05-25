@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import pojos.Appointment;
 import view.GlobalConfigView;
 import view.buttons.RoundedBorderButton;
 
@@ -32,30 +34,21 @@ public class PanelAppointmentPanelFooter extends JPanel {
         JButton buttonSaveApointment = new JButton("Guardar");
         buttonSaveApointment.setPreferredSize(new Dimension(100, 40));
         buttonSaveApointment.setBorder(new RoundedBorderButton(20));
-        // buttonSaveApointment.addActionListener(new java.awt.event.ActionListener() {
-        //     public void actionPerformed(java.awt.event.ActionEvent evt) {
-        //         if (dialogAppointmentManager.panelMainFooter.dialogAppointmentListManager != null) {
-        //             dialogAppointmentManager.panelMainFooter.dialogAppointmentListManager.panelAppointmentListBody.addRows(createPerson());
-        //         }
-        //         else{
-        //             dialogAppointmentManager.panelMainFooter.createDialogAppointmentList();
-        //         }
-        //     }
-        // });
+        buttonSaveApointment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                if (dialogAppointmentManager.panelMainFooter.dialogAppointmentListManager == null) {
+                    dialogAppointmentManager.panelMainFooter.createDialogAppointmentList();
+                }
+                // Crear y guardar la nueva cita
+                Appointment newAppointment = dialogAppointmentManager.panelAppointmentPanelBody.createAppointment();
+                dialogAppointmentManager.panelMainFooter.mainView.getPresenter().addAppointment(newAppointment);
+
+                // Actualizar la tabla
+                dialogAppointmentManager.panelMainFooter.dialogAppointmentListManager.panelAppointmentListBody
+                        .fillTableWithAppointments();
+                dialogAppointmentManager.dispose();
+            }
+        });
         this.add(buttonSaveApointment);
     }
-
-    // public Appointment createPerson() {
-    //     Appointment person = new Appointment();
-    //     person.setDate(dialogAppointmentManager.panelAppointmentPanelBody.jDateChooser.getCalendar());
-    //     person.setCompletename(dialogAppointmentManager.panelAppointmentPanelBody.textFieldCompleteName.getText());
-    //     person.setTypeDocument(
-    //             dialogAppointmentManager.panelAppointmentPanelBody.jComboBoxDocumentType.getSelectedItem().toString());
-    //     person.setDocumentNumber(dialogAppointmentManager.panelAppointmentPanelBody.textFieldNumber.getText());
-    //     person.setRelationship(
-    //             dialogAppointmentManager.panelAppointmentPanelBody.jComboBoxRelationship.getSelectedItem().toString());
-    //     person.setPetTypeAndSex(dialogAppointmentManager.panelAppointmentPanelBody.jComboBoxPetSpeciesAndSex
-    //             .getSelectedItem().toString());
-    //     return person;
-    // }
 }

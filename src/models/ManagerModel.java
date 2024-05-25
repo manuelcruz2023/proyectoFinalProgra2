@@ -1,72 +1,32 @@
 package models;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.io.FileReader;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
+import interfaces.Contract;
 import pojos.Appointment;
 import pojos.Vaccine;
 
-public class ManagerModel {
+public class ManagerModel implements Contract.Model {
 
-    private Calendar appointmentDate;
-    private Calendar expireDate;
     private String path;
+    private List<Appointment> appointmentList;
+    private List<Vaccine> vaccinesList;
+    @SuppressWarnings("unused")
+    private Contract.Presenter presenter;
 
     public void setPath(String path) {
         this.path = path;
     }
-
-    private Appointment filterByDate(Date date) {
-        Appointment personFilter = new Appointment();
-        List<Appointment> appointments = new ArrayList<>();
-        for (Appointment person : appointments) {
-            if (person.getDate().equals(date)) {
-                personFilter = person;
-            }
-        }
-        return personFilter;
-    }
-
-    private List<Appointment> filterByResponsible(String relationship) {
-        List<Appointment> appointment = new ArrayList<>();
-        List<Appointment> appointmentsFilter = new ArrayList<>();
-        for (Appointment appointment2 : appointment) {
-            if (appointment2.getRelationship().equals(relationship)) {
-                appointmentsFilter.add(appointment2);
-            }
-        }
-        return appointmentsFilter;
-    }
-
-    public Long vaccineDuration() {
-        appointmentDate = Calendar.getInstance();
-        appointmentDate.set(2024, 4, 22);// TODO fecha quemada
-        long millisAppointmentDate = appointmentDate.getTimeInMillis();
-        expireDate = Calendar.getInstance();
-        expireDate.set(2024, 4, 30);// TODO fecha quemada
-        long millisExpireDate = expireDate.getTimeInMillis();
-        long diff = millisExpireDate - millisAppointmentDate;
-        long days = TimeUnit.MILLISECONDS.toDays(diff);
-        System.out.println(days);
-        return days;
-    }
-
-    private List<Appointment> filterBySoonToExpire() {
-        List<Appointment> appointments = new ArrayList<>();
-        List<Appointment> filterAppointments = new ArrayList<>();
-        for (Appointment appointment : appointments) {
-            if (vaccineDuration() <= 30) {
-                filterAppointments.add(appointment);
-            }
-        }
-        return filterAppointments;
+    public ManagerModel() {
+        this.appointmentList = new ArrayList<>();
+        this.vaccinesList = new ArrayList<>();
     }
 
     public JSONArray readFilejson() throws IOException, org.json.simple.parser.ParseException {
@@ -75,23 +35,26 @@ public class ManagerModel {
         return (JSONArray) obj;
     }
 
+    public Long vaccineDuration(LocalDate appointmentDate) {
+        LocalDate expireDate = LocalDate.now();
+        long days = ChronoUnit.DAYS.between(appointmentDate, expireDate);
+        System.out.println(days);
+        return days;
+    }
 
-    private List<Appointment> completeListAppointment() throws IOException, org.json.simple.parser.ParseException {
-        List<Appointment> appointmentList = new ArrayList<>();
-        JSONArray jsonArray = readFilejson();
-        for (int i = 0; i < jsonArray.size(); i++) {
-            JSONObject appointment = (JSONObject) jsonArray.get(i);
-            Appointment appointment1 = new Appointment();
-            appointment1.setCompletename((String) appointment.get("completename"));
-            appointment1.setTypeDocument((String) appointment.get("typeDocument"));
-            appointment1.setDocumentNumber((String) appointment.get("document"));
-            appointment1.setPetName((String) appointment.get("petName"));
-            appointment1.setRelationship((String) appointment.get("relationship"));
-            appointment1.setPetTypeAndSex((String) appointment.get("petTypeAndSex"));
-            appointment1.setDate((Calendar) appointment.get("date"));
-            appointment1.setVaccinesApplied((Vaccine) appointment.get("vaccinesApplied"));
-            appointmentList.add(appointment1);
-        }
+    @Override
+    public List<Appointment> getListAppointment() {
         return appointmentList;
     }
+    
+    @Override
+    public void addAppointmentModel(Appointment appointment) {
+        appointmentList.add(appointment);
+    }
+
+    @Override
+    public void setPresenter(Contract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
 }

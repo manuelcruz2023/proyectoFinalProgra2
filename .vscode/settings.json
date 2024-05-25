@@ -4,6 +4,8 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "c:\\Users\\FAMILIA CRUZ\\Downloads\\jcalendar-1.4.jar",
-        "c:\\Users\\FAMILIA CRUZ\\Downloads\\json-simple-1.1.1.jar"
+        "c:\\Users\\FAMILIA CRUZ\\Downloads\\json-simple-1.1.1.jar",
+        "c:\\Users\\juand\\Downloads\\jcalendar-1.4.jar",
+        "c:\\Users\\juand\\Downloads\\json-simple-1.1.1.jar"
     ]
 }

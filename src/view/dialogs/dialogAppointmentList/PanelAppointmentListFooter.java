@@ -35,14 +35,12 @@ public class PanelAppointmentListFooter extends JPanel{
     private void createButtonFilterByResponsible () {
         JButton buttonFilterByResponsible = new JButton("Filtrar por responsable");
         buttonFilterByResponsible.setPreferredSize(new Dimension(200, 40));
-        //buttonFilterByResponsible.setBorder(new RoundedBorderButton(20));
         this.add(buttonFilterByResponsible);
     }
 
     private void createButtonFilterBySoonToExpire() {
         JButton buttonFilterBySoonToExpire = new JButton("Filtrar por proxima expiracion");
         buttonFilterBySoonToExpire.setPreferredSize(new Dimension(200, 40));
-        //buttonFilterBySoonToExpire.setBorder(new RoundedBorderButton(20));
         this.add(buttonFilterBySoonToExpire);
     }
 

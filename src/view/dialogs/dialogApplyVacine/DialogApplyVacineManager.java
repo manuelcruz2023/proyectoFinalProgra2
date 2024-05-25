@@ -22,7 +22,7 @@ public class DialogApplyVacineManager extends JDialog{
     }
 
     private void initDialog() {
-        this.setSize(600,400);
+        this.setSize(600,800);
         this.setLocationRelativeTo(panelAppointmentListBody.dialogAppointmentListManager);
         this.setResizable(false);
         this.setLayout(new BorderLayout());

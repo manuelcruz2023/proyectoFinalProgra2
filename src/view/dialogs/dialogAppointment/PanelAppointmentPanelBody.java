@@ -6,10 +6,14 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.time.ZoneId;
+
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import com.toedter.calendar.JDateChooser;
+
+import pojos.Appointment;
 import view.GlobalConfigView;
 import view.dialogs.configTextFieldView.ConfigLimitedTextField;
 import view.dialogs.configTextFieldView.ConfigTextFieldNumber;
@@ -37,6 +41,7 @@ public class PanelAppointmentPanelBody extends JPanel {
         this.setPreferredSize(new Dimension(800, 80));
         this.setFont(GlobalConfigView.BASIC_FONT);
         this.setLayout(new GridBagLayout());
+        this.setFont(new Font("Roboto", Font.PLAIN, 18));
     }
 
     private void begin() {
@@ -69,7 +74,7 @@ public class PanelAppointmentPanelBody extends JPanel {
 
     private void createJDateChooser() {
         jDateChooser = new JDateChooser();
-        jDateChooser.setFont(new Font("Roboto", Font.PLAIN, 18));
+        jDateChooser.setFont(getFont());
         jDateChooser.setBackground(Color.WHITE);
         jDateChooser.setPreferredSize(new Dimension(400, 30));
         constraints = new GridBagConstraints();
@@ -82,7 +87,7 @@ public class PanelAppointmentPanelBody extends JPanel {
     private void createTextFieldCompleteName() {
         textFieldCompleteName = new ConfigLimitedTextField(50);
         textFieldCompleteName.setToolTipText("Máximo 50 caracteres");
-        textFieldCompleteName.setFont(new Font("Roboto", Font.PLAIN, 18));
+        textFieldCompleteName.setFont(getFont());
         textFieldCompleteName.setBackground(Color.WHITE);
         textFieldCompleteName.setPreferredSize(new Dimension(400, 30));
         constraints = new GridBagConstraints();
@@ -98,7 +103,7 @@ public class PanelAppointmentPanelBody extends JPanel {
         jComboBoxDocumentType.addItem("C.E");
         jComboBoxDocumentType.addItem("T.I");
         jComboBoxDocumentType.setSelectedItem(null);
-        jComboBoxDocumentType.setFont(new Font("Roboto", Font.PLAIN, 18));
+        jComboBoxDocumentType.setFont(getFont());
         jComboBoxDocumentType.setBackground(Color.WHITE);
         jComboBoxDocumentType.setPreferredSize(new Dimension(400, 30));
         constraints = new GridBagConstraints();
@@ -110,7 +115,7 @@ public class PanelAppointmentPanelBody extends JPanel {
 
     private void createTextFieldDocumentNumber() {
         textFieldNumber = new ConfigTextFieldNumber();
-        textFieldNumber.setFont(new Font("Roboto", Font.PLAIN, 18));
+        textFieldNumber.setFont(getFont());
         textFieldNumber.setBackground(Color.WHITE);
         textFieldNumber.setPreferredSize(new Dimension(400, 30));
         GridBagConstraints constraints = new GridBagConstraints();
@@ -127,7 +132,7 @@ public class PanelAppointmentPanelBody extends JPanel {
         jComboBoxRelationship.addItem("Familiar");
         jComboBoxRelationship.addItem("Amigo");
         jComboBoxRelationship.setSelectedItem(null);
-        jComboBoxRelationship.setFont(new Font("Roboto", Font.PLAIN, 18));
+        jComboBoxRelationship.setFont(getFont());
         jComboBoxRelationship.setBackground(Color.WHITE);
         jComboBoxRelationship.setPreferredSize(new Dimension(400, 30));
         GridBagConstraints constraints = new GridBagConstraints();
@@ -141,7 +146,7 @@ public class PanelAppointmentPanelBody extends JPanel {
     private void createTextFieldPetName() {
         textFieldPetName = new ConfigLimitedTextField(30);
         textFieldPetName.setToolTipText("Máximo 30 caracteres");
-        textFieldPetName.setFont(new Font("Roboto", Font.PLAIN, 18));
+        textFieldPetName.setFont(getFont());
         textFieldPetName.setBackground(Color.WHITE);
         textFieldPetName.setPreferredSize(new Dimension(400, 30));
         GridBagConstraints constraints = new GridBagConstraints();
@@ -159,7 +164,7 @@ public class PanelAppointmentPanelBody extends JPanel {
         jComboBoxPetSpeciesAndSex.addItem("Gato Macho");
         jComboBoxPetSpeciesAndSex.addItem("Gato Hembra");
         jComboBoxPetSpeciesAndSex.setSelectedItem(null);
-        jComboBoxPetSpeciesAndSex.setFont(new Font("Roboto", Font.PLAIN, 18));
+        jComboBoxPetSpeciesAndSex.setFont(getFont());
         jComboBoxPetSpeciesAndSex.setBackground(Color.WHITE);
         jComboBoxPetSpeciesAndSex.setPreferredSize(new Dimension(400, 30));
         GridBagConstraints constraints = new GridBagConstraints();
@@ -178,5 +183,18 @@ public class PanelAppointmentPanelBody extends JPanel {
         createjComboBoxRelationship();
         createTextFieldPetName();
         createTextFieldPetSpeciesAndSex();
+    }
+
+    public Appointment createAppointment() {
+        Appointment appointment = new Appointment();
+        appointment.setDate(jDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        appointment.setCompletename(textFieldCompleteName.getText());
+        appointment.setTypeDocument(jComboBoxDocumentType.getSelectedItem().toString());
+        appointment.setDocumentNumber(textFieldNumber.getText());
+        appointment.setRelationship(jComboBoxRelationship.getSelectedItem().toString());
+        appointment.setPetName(textFieldPetName.getText());
+        appointment.setPetTypeAndSex(jComboBoxPetSpeciesAndSex.getSelectedItem().toString());
+        appointment.setVaccinesApplied(null);
+        return appointment;
     }
 }

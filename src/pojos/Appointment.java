@@ -1,9 +1,9 @@
 package pojos;
 
-import java.util.Calendar;
+import java.time.LocalDate;
 public class Appointment {
 
-    private Calendar date;
+    private LocalDate date;
     private String completename;
     private String typeDocument;
     private String documentNumber;
@@ -12,10 +12,10 @@ public class Appointment {
     private String petTypeAndSex;
     private Vaccine vaccinesApplied;
 
-    public Calendar getDate() {
+    public LocalDate getDate() {
         return date;
     }
-    public void setDate(Calendar date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
     public String getCompletename() {
