@@ -31,7 +31,7 @@ public class PanelAppointmentListBody extends JPanel {
     private JTable table;
     public JScrollPane scrollPane;
     public int index;
-    public List<Vaccine> vaccinesAppliedString;
+    public List<Vaccine> vaccinesApplied;
     public int selection;
     private JPanel panelButtons;
     private JButton buttonFilterByDate;
@@ -76,7 +76,6 @@ public class PanelAppointmentListBody extends JPanel {
             default:
                 return null;
         }
-
     }
 
     private void createTable() {
@@ -221,9 +220,5 @@ public class PanelAppointmentListBody extends JPanel {
                 index = table.rowAtPoint(evt.getPoint());
             }
         });
-    }
-
-    public void setVaccinesApplied(List<Vaccine> vaccinesApplied) {
-        vaccinesAppliedString = vaccinesApplied;
     }
 }

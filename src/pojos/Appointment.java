@@ -1,10 +1,9 @@
 package pojos;
 
-import java.time.LocalDate;
 import java.util.List;
 public class Appointment {
 
-    private LocalDate appointmentDate;
+    private String appointmentDate;
     private String completename;
     private String typeDocument;
     private String documentNumber;
@@ -13,10 +12,10 @@ public class Appointment {
     private String petTypeAndSex;
     private List<Vaccine> vaccinesApplied;
 
-    public LocalDate getDate() {
+    public String getDate() {
         return appointmentDate;
     }
-    public void setDate(LocalDate appointmentDate) {
+    public void setDate(String appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
     public String getCompletename() {

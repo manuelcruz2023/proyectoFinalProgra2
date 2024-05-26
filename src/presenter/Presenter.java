@@ -1,6 +1,5 @@
 package presenter;
 
-import java.time.LocalDate;
 import java.util.List;
 import interfaces.Contract;
 import pojos.Appointment;

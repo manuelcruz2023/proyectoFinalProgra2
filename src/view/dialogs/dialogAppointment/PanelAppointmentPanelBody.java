@@ -7,8 +7,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -189,7 +187,8 @@ public class PanelAppointmentPanelBody extends JPanel {
 
     public Appointment createAppointment() {
         appointment = new Appointment();
-        appointment.setDate(LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(jDateChooser.getDate())));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy");
+        appointment.setDate(formatter.format(jDateChooser.getDate()).toString());
         appointment.setCompletename(textFieldCompleteName.getText());
         appointment.setTypeDocument(jComboBoxDocumentType.getSelectedItem().toString());
         appointment.setDocumentNumber(textFieldNumber.getText());
