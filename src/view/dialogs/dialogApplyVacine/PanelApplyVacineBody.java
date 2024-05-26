@@ -3,9 +3,13 @@ package view.dialogs.dialogApplyVacine;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import pojos.Vaccine;
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+
 import view.GlobalConfigView;
 
 public class PanelApplyVacineBody extends JPanel {
@@ -14,12 +18,15 @@ public class PanelApplyVacineBody extends JPanel {
     private JTable table;
     private JScrollPane scrollPane;
     public int index;
+    //public List<Vaccine> vaccinesApplied;
+    public Vaccine vaccineApplied;
 
     public PanelApplyVacineBody(DialogApplyVacineManager dialogApplyVacineManager) {
         this.dialogApplyVacineManager = dialogApplyVacineManager;
         initPanel();
         begin();
         createTable();
+        addMouseListener();
     }
 
     private void initPanel() {
@@ -47,5 +54,13 @@ public class PanelApplyVacineBody extends JPanel {
         scrollPane.setPreferredSize(new Dimension(500, 500));
         scrollPane = new JScrollPane(table);
         add(scrollPane);
+    }
+
+    private void addMouseListener() {
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                index = table.rowAtPoint(evt.getPoint());
+            }
+        });
     }
 }

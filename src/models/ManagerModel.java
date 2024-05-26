@@ -134,8 +134,7 @@ public class ManagerModel implements Contract.Model {
     public List<Appointment> filterByResponsible(String documentNumber) {
         List<Appointment> fList = new ArrayList<>();
         for (Appointment appointment : appointmentList) {
-            if (removeSpaces(appointment.getDocumentNumber()).equals
-                    (removeSpaces(documentNumber))) {
+            if (appointment.getDocumentNumber().equals(removeSpaces(documentNumber))) {
                 fList.add(appointment);
             }
         }
@@ -146,7 +145,7 @@ public class ManagerModel implements Contract.Model {
     public List<Appointment> filterByVaccineSoonToExpire() {
         LocalDate today = LocalDate.now();
         LocalDate soon = today.plusDays(30); // Ajusta este valor según lo que consideres "próximo a expirar"
-    
+
         List<Appointment> fList = new ArrayList<>();
         for (Appointment appointment : appointmentList) {
             for (Vaccine vaccine : appointment.getVaccinesApplied()) {
@@ -158,12 +157,12 @@ public class ManagerModel implements Contract.Model {
         return fList;
     }
 
-    public String removeSpaces (String string) {
+    public String removeSpaces(String string) {
         String newString = "";
         for (int i = 0; i < string.length(); i++) {
-            String temp = string.substring(i, i+1);
-            if (!temp.equals(string)) {
-                newString+=temp;
+            String temp = string.substring(i, i + 1);
+            if (!temp.equals(" ")) {
+                newString += temp;
             }
         }
         return newString;

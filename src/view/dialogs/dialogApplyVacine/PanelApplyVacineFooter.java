@@ -4,6 +4,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import pojos.Vaccine;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 import view.GlobalConfigView;
 import view.buttons.RoundedBorderButton;
@@ -12,7 +13,6 @@ public class PanelApplyVacineFooter extends JPanel {
 
     public DialogApplyVacineManager dialogApplyVacineManager;
     private List<Vaccine> vaccinesList;
-    public List<Vaccine> vaccinesApplied;
 
     public PanelApplyVacineFooter(DialogApplyVacineManager dialogApplyVacineManager) {
         this.dialogApplyVacineManager = dialogApplyVacineManager;
@@ -38,14 +38,23 @@ public class PanelApplyVacineFooter extends JPanel {
     }
 
     private void createButtonApplyVaccine() {
-        JButton buttonSaveApointment = new JButton("Añadir Vacuna");
-        buttonSaveApointment.setPreferredSize(new Dimension(150, 40));
-        buttonSaveApointment.setBorder(new RoundedBorderButton(20));
-        buttonSaveApointment.addActionListener(new java.awt.event.ActionListener() {
+        JButton buttonApplyVaccine = new JButton("Aplicar Vacuna");
+        buttonApplyVaccine.setPreferredSize(new Dimension(150, 40));
+        buttonApplyVaccine.setBorder(new RoundedBorderButton(20));
+        buttonApplyVaccine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-
+                List<Vaccine> vaccinesApplied; // Declare vaccinesApplied variable
+                if (dialogApplyVacineManager.panelAppointmentListBody.appointments.get(dialogApplyVacineManager.panelAppointmentListBody.index).getVaccinesApplied() == null) {
+                    vaccinesApplied = new ArrayList<>(); // Initialize vaccinesApplied
+                } else {
+                    vaccinesApplied = dialogApplyVacineManager.panelAppointmentListBody.appointments.get(dialogApplyVacineManager.panelAppointmentListBody.index).getVaccinesApplied(); // Assign existing vaccinesApplied
+                }
+                vaccinesApplied.add(dialogApplyVacineManager.panelAppointmentListBody.dialogAppointmentListManager.panelMainFooter.dialogVaccinesListManager.panelVaccinesListBody.vaccineList.get(dialogApplyVacineManager.panelApplyVacineBody.index)); // Add vaccine to vaccinesApplied
+                dialogApplyVacineManager.panelAppointmentListBody.appointments.get(dialogApplyVacineManager.panelAppointmentListBody.index).setVaccinesApplied(vaccinesApplied); // Set vaccinesApplied
+                dialogApplyVacineManager.panelAppointmentListBody.fillTableWithAppointments(); // Fill table with appointments
+                dialogApplyVacineManager.dispose();
             }
         });
-        this.add(buttonSaveApointment);
+        this.add(buttonApplyVaccine);
     }
 }

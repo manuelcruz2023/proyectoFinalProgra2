@@ -26,8 +26,8 @@ public class PanelAppointmentListFooter extends JPanel{
         this.dialogAppointmentListManager = dialogAppointmentListManager;
         initPanel();
         begin();
-        createButtons();
-        createTable();
+        // createButtons();
+        // createTable();
     }
 
     private void initPanel() {
@@ -40,66 +40,37 @@ public class PanelAppointmentListFooter extends JPanel{
         setVisible(true);
     }
 
-    private void createButtonFilterByDate() {
-        JButton buttonFilterByDate = new JButton("Filtrar por fecha");
-        buttonFilterByDate.setPreferredSize(new Dimension(150, 40));
-        buttonFilterByDate.setBorder(new RoundedBorderButton(20));
-        buttonFilterByDate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                appointments = dialogAppointmentListManager.panelMainFooter.mainView.getPresenter()
-                .loadFilterByDate();
-                for (Appointment appointment : appointments) {
-                    System.out.println(appointment.getDate());
-                }
-            }
-        });
-        this.add(buttonFilterByDate);
-    }
+    // private void createButtonFilterByDate() {
+    //     JButton buttonFilterByDate = new JButton("Filtrar por fecha");
+    //     buttonFilterByDate.setPreferredSize(new Dimension(150, 40));
+    //     buttonFilterByDate.setBorder(new RoundedBorderButton(20));
+    //     buttonFilterByDate.addActionListener(new java.awt.event.ActionListener() {
+    //         public void actionPerformed(java.awt.event.ActionEvent evt) {
+    //             appointments = dialogAppointmentListManager.panelMainFooter.mainView.getPresenter()
+    //             .loadFilterByDate();
+    //             for (Appointment appointment : appointments) {
+    //                 System.out.println(appointment.getDate());
+    //             }
+    //         }
+    //     });
+    //     this.add(buttonFilterByDate);
+    // } 
 
-    private void createButtonFilterByResponsible () {
-        JButton buttonFilterByResponsible = new JButton("Filtrar por responsable");
-        buttonFilterByResponsible.setPreferredSize(new Dimension(200, 40));
-        this.add(buttonFilterByResponsible);
-    }
+    // private void createButtonFilterByResponsible () {
+    //     JButton buttonFilterByResponsible = new JButton("Filtrar por responsable");
+    //     buttonFilterByResponsible.setPreferredSize(new Dimension(200, 40));
+    //     this.add(buttonFilterByResponsible);
+    // }
 
-    private void createButtonFilterBySoonToExpire() {
-        JButton buttonFilterBySoonToExpire = new JButton("Filtrar por proxima expiracion");
-        buttonFilterBySoonToExpire.setPreferredSize(new Dimension(200, 40));
-        this.add(buttonFilterBySoonToExpire);
-    }
+    // private void createButtonFilterBySoonToExpire() {
+    //     JButton buttonFilterBySoonToExpire = new JButton("Filtrar por proxima expiracion");
+    //     buttonFilterBySoonToExpire.setPreferredSize(new Dimension(200, 40));
+    //     this.add(buttonFilterBySoonToExpire);
+    // }
 
-    private void createButtons() {
-        createButtonFilterByDate();
-        createButtonFilterByResponsible();
-        createButtonFilterBySoonToExpire();
-    }
-
-    private void createTable() {
-        defaultTableModel = new DefaultTableModel();
-        defaultTableModel.addColumn("Nombre completo del responsable");
-        defaultTableModel.addColumn("Numero de documento del responsable");
-        defaultTableModel.addColumn("Relacion");
-        defaultTableModel.addColumn("Nombre de la mascota");
-        defaultTableModel.addColumn("Especie y sexo de la mascota");
-        defaultTableModel.addColumn("Fecha");
-        defaultTableModel.addColumn("Vacunas aplicadas");
-        table = new JTable(defaultTableModel);
-        scrollPane = new JScrollPane(table);
-        scrollPane.setPreferredSize(new Dimension(900, 390));
-        add(scrollPane);
-    }
-
-    public void fillTableWithAppointments() {
-        defaultTableModel.setRowCount(0);
-        for (Appointment appointment : appointments) {
-            defaultTableModel.addRow(new Object[] {
-                    appointment.getCompletename(),
-                    appointment.getDocumentNumber(),
-                    appointment.getRelationship(),
-                    appointment.getPetName(),
-                    appointment.getPetTypeAndSex(),
-                    appointment.getDate(),
-            });
-        }
-    }
+    // private void createButtons() {
+    //     createButtonFilterByDate();
+    //     createButtonFilterByResponsible();
+    //     createButtonFilterBySoonToExpire();
+    // }
 }
