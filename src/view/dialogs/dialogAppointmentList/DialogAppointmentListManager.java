@@ -39,7 +39,7 @@ public class DialogAppointmentListManager extends JDialog {
     }
 
     private void addFooter() {
-        panelAppointmentListFooter = new PanelAppointmentListFooter();
+        panelAppointmentListFooter = new PanelAppointmentListFooter(this);
         this.add(panelAppointmentListFooter, BorderLayout.SOUTH);
     }
 

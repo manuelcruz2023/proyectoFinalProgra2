@@ -1,8 +1,6 @@
 package view.dialogs.dialogAppointmentList;
 
 import java.awt.Dimension;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.List;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -11,7 +9,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import com.toedter.calendar.JDateChooser;
 import pojos.Appointment;
 import view.GlobalConfigView;
 import view.dialogs.dialogApplyVacine.DialogApplyVacineManager;
@@ -19,10 +16,13 @@ import view.dialogs.dialogApplyVacine.DialogApplyVacineManager;
 public class PanelAppointmentListBody extends JPanel {
 
     public DialogAppointmentListManager dialogAppointmentListManager;
-
+    public DialogApplyVacineManager dialogApplyVacineManager;
+    public List<Appointment> appointments;
     private DefaultTableModel defaultTableModel;
     private JTable table;
     public JScrollPane scrollPane;
+    public int index;
+    public String vaccinesAppliedString = "";
 
     public PanelAppointmentListBody(DialogAppointmentListManager dialogAppointmentListManager) {
         this.dialogAppointmentListManager = dialogAppointmentListManager;
@@ -30,7 +30,6 @@ public class PanelAppointmentListBody extends JPanel {
         begin();
         createTable();
         addMouseListener();
-        fillTableWithAppointments();
     }
 
     private void initPanel() {
@@ -42,7 +41,7 @@ public class PanelAppointmentListBody extends JPanel {
         setVisible(true);
     }
 
-    private List<Appointment> getListAppointments() {
+    public List<Appointment> getListAppointments() {
         return dialogAppointmentListManager.panelMainFooter.mainView.getPresenter().loadListAppointment();
     }
 
@@ -62,7 +61,7 @@ public class PanelAppointmentListBody extends JPanel {
     }
 
     public void fillTableWithAppointments() {
-        List<Appointment> appointments = getListAppointments();
+        appointments = getListAppointments();
         defaultTableModel.setRowCount(0);
         for (Appointment appointment : appointments) {
             defaultTableModel.addRow(new Object[] {
@@ -72,17 +71,11 @@ public class PanelAppointmentListBody extends JPanel {
                     appointment.getPetName(),
                     appointment.getPetTypeAndSex(),
                     appointment.getDate(),
-                    appointment.getVaccinesApplied()
             });
+            vaccinesAppliedString = "";
         }
     }
 
-    public void getDates() {
-        JDateChooser jDateChooser = dialogAppointmentListManager.panelMainFooter.dialogAppointmentManager.panelAppointmentPanelBody.jDateChooser;
-        LocalDate appointmentDate = LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(jDateChooser.getDate()));
-        //JDateChooser jDateChooser2 = 
-        
-    }
     private void addMouseListener() {
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -109,14 +102,7 @@ public class PanelAppointmentListBody extends JPanel {
     }
 
     private void createDialogApplyVacine() {
-        DialogApplyVacineManager dialogApplyVacineManager = new DialogApplyVacineManager(this);
+        dialogApplyVacineManager = new DialogApplyVacineManager(this);
         dialogApplyVacineManager.begin();
-    }
-
-    public void removeAppointment() {
-        int row = table.getSelectedRow();
-        if (row != -1) {
-            defaultTableModel.removeRow(row);
-        }
     }
 }

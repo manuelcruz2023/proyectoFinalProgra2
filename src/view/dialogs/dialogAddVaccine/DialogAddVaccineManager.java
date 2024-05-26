@@ -8,7 +8,6 @@ import view.dialogs.dialogVaccinesList.PanelVaccinesListFooter;
 public class DialogAddVaccineManager extends JDialog {
 
     public PanelVaccinesListFooter panelVaccinesListFooter;
-
     public PanelAddVaccineHeader panelAddVaccineHeader;
     public PanelAddVaccineBody panelAddVaccineBody;
     public PanelAddVaccineFooter panelAddVaccineFooter;

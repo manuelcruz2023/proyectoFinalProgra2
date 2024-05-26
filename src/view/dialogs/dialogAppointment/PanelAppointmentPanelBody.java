@@ -29,6 +29,7 @@ public class PanelAppointmentPanelBody extends JPanel {
     public ConfigLimitedTextField textFieldPetName;
     public JComboBox<String> jComboBoxPetSpeciesAndSex;
     public GridBagConstraints constraints;
+    public Appointment appointment;
 
     public PanelAppointmentPanelBody() {
         initPanel();
@@ -187,7 +188,7 @@ public class PanelAppointmentPanelBody extends JPanel {
     }
 
     public Appointment createAppointment() {
-        Appointment appointment = new Appointment();
+        appointment = new Appointment();
         appointment.setDate(LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(jDateChooser.getDate())));
         appointment.setCompletename(textFieldCompleteName.getText());
         appointment.setTypeDocument(jComboBoxDocumentType.getSelectedItem().toString());
@@ -195,7 +196,6 @@ public class PanelAppointmentPanelBody extends JPanel {
         appointment.setRelationship(jComboBoxRelationship.getSelectedItem().toString());
         appointment.setPetName(textFieldPetName.getText());
         appointment.setPetTypeAndSex(jComboBoxPetSpeciesAndSex.getSelectedItem().toString());
-        appointment.setVaccinesApplied(null);
         return appointment;
     }
 }

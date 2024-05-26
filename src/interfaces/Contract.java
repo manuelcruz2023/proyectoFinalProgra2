@@ -1,6 +1,7 @@
 package interfaces;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import pojos.Appointment;
 import pojos.Vaccine;
@@ -14,6 +15,9 @@ public interface Contract {
         public void addVaccineModel(Vaccine vaccine);
         public void writeListAppointment() throws IOException;
         public void writeListVaccine(String fileName);
+        public List<Appointment> filterByDate();
+        public List<Appointment> filterByResponsible(String documentNumber);
+        public List<Appointment> filterByVaccineSoonToExpire();
     }
 
     public interface Presenter {
@@ -23,11 +27,13 @@ public interface Contract {
         public void addAppointment(Appointment appointment);
         public List<Vaccine> loadListVaccine();
         public void addVaccine(Vaccine vaccine);    
+        public List<Appointment> loadFilterByDate();
+        public List<Appointment> loadFilterByResponsible(String documentNumber);
+        public List<Appointment> loadFilterByVaccineSoonToExpire();
     }
 
     public interface View {
         public void setPresenter(Presenter presenter);
-        public List<Appointment> requestListAppointment();
         public void begin ();
     }
 }

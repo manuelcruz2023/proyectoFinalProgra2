@@ -2,7 +2,6 @@ package view.dialogs.dialogVaccinesList;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import view.GlobalConfigView;
@@ -12,6 +11,7 @@ import view.dialogs.dialogAddVaccine.DialogAddVaccineManager;
 public class PanelVaccinesListFooter extends JPanel{
 
     public DialogVaccinesListManager dialogVaccinesListManager;
+    public DialogAddVaccineManager dialogAddVaccineManager;
 
     public PanelVaccinesListFooter(DialogVaccinesListManager dialogVaccinesListManager) {
         this.dialogVaccinesListManager = dialogVaccinesListManager;
@@ -43,7 +43,7 @@ public class PanelVaccinesListFooter extends JPanel{
     }
 
     public void createDialogAddVaccine() {
-        DialogAddVaccineManager dialogAddVaccine = new DialogAddVaccineManager(this);
-        dialogAddVaccine.begin();
+        dialogAddVaccineManager = new DialogAddVaccineManager(this);
+        dialogAddVaccineManager.begin();
     }
 }

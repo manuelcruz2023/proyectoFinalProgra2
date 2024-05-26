@@ -2,17 +2,32 @@ package view.dialogs.dialogAppointmentList;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import pojos.Appointment;
 import view.GlobalConfigView;
 import view.buttons.RoundedBorderButton;
 
 public class PanelAppointmentListFooter extends JPanel{
 
-    public PanelAppointmentListFooter() {
+    public DialogAppointmentListManager dialogAppointmentListManager;
+    public List<Appointment> appointments;
+    private DefaultTableModel defaultTableModel;
+    private JTable table;
+    public JScrollPane scrollPane;
+
+    public PanelAppointmentListFooter(DialogAppointmentListManager dialogAppointmentListManager) {
+        this.dialogAppointmentListManager = dialogAppointmentListManager;
         initPanel();
         begin();
         createButtons();
+        createTable();
     }
 
     private void initPanel() {
@@ -29,6 +44,15 @@ public class PanelAppointmentListFooter extends JPanel{
         JButton buttonFilterByDate = new JButton("Filtrar por fecha");
         buttonFilterByDate.setPreferredSize(new Dimension(150, 40));
         buttonFilterByDate.setBorder(new RoundedBorderButton(20));
+        buttonFilterByDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                appointments = dialogAppointmentListManager.panelMainFooter.mainView.getPresenter()
+                .loadFilterByDate();
+                for (Appointment appointment : appointments) {
+                    System.out.println(appointment.getDate());
+                }
+            }
+        });
         this.add(buttonFilterByDate);
     }
 
@@ -48,5 +72,34 @@ public class PanelAppointmentListFooter extends JPanel{
         createButtonFilterByDate();
         createButtonFilterByResponsible();
         createButtonFilterBySoonToExpire();
+    }
+
+    private void createTable() {
+        defaultTableModel = new DefaultTableModel();
+        defaultTableModel.addColumn("Nombre completo del responsable");
+        defaultTableModel.addColumn("Numero de documento del responsable");
+        defaultTableModel.addColumn("Relacion");
+        defaultTableModel.addColumn("Nombre de la mascota");
+        defaultTableModel.addColumn("Especie y sexo de la mascota");
+        defaultTableModel.addColumn("Fecha");
+        defaultTableModel.addColumn("Vacunas aplicadas");
+        table = new JTable(defaultTableModel);
+        scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(900, 390));
+        add(scrollPane);
+    }
+
+    public void fillTableWithAppointments() {
+        defaultTableModel.setRowCount(0);
+        for (Appointment appointment : appointments) {
+            defaultTableModel.addRow(new Object[] {
+                    appointment.getCompletename(),
+                    appointment.getDocumentNumber(),
+                    appointment.getRelationship(),
+                    appointment.getPetName(),
+                    appointment.getPetTypeAndSex(),
+                    appointment.getDate(),
+            });
+        }
     }
 }

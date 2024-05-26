@@ -1,10 +1,12 @@
 package pojos;
 
+import java.time.LocalDate;
+
 public class Vaccine {
     private String name;
     private String species;
     private String duration;
-    private String ExpiryDate;
+    private LocalDate ExpiryDate;
 
     public String getName() {
         return name;
@@ -24,10 +26,10 @@ public class Vaccine {
     public void setDuration(String duration) {
         this.duration = duration;
     }
-    public String getExpiryDate() {
+    public LocalDate getExpiryDate() {
         return ExpiryDate;
     }
-    public void setExpiryDate(String expiryDate) {
+    public void setExpiryDate(LocalDate expiryDate) {
         ExpiryDate = expiryDate;
     }
 }

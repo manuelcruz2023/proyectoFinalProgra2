@@ -1,6 +1,7 @@
 package models;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.simple.JSONArray;
@@ -21,6 +22,8 @@ public class ManagerModel implements Contract.Model {
     private List<Vaccine> vaccinesList;
     List<JSONObject> jsonArrayAppointment;
     private File fileAppointment;
+    private List<Appointment> appointmentFilterList;
+
     @SuppressWarnings("unused")
     private Contract.Presenter presenter;
 
@@ -112,7 +115,57 @@ public class ManagerModel implements Contract.Model {
 
     @Override
     public void writeListVaccine(String fileName) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'writeListVaccine'");
+    }
+
+    @Override
+    public List<Appointment> filterByDate() {
+        LocalDate date = LocalDate.now();
+        List<Appointment> fList = new ArrayList<>();
+        for (Appointment appointment : appointmentList) {
+            if (appointment.getDate().isEqual(date)) {
+                fList.add(appointment);
+            }
+        }
+        return fList;
+    }
+
+    @Override
+    public List<Appointment> filterByResponsible(String documentNumber) {
+        List<Appointment> fList = new ArrayList<>();
+        for (Appointment appointment : appointmentList) {
+            if (removeSpaces(appointment.getDocumentNumber()).equals
+                    (removeSpaces(documentNumber))) {
+                fList.add(appointment);
+            }
+        }
+        return fList;
+    }
+
+    @Override
+    public List<Appointment> filterByVaccineSoonToExpire() {
+        LocalDate today = LocalDate.now();
+        LocalDate soon = today.plusDays(30); // Ajusta este valor según lo que consideres "próximo a expirar"
+    
+        List<Appointment> fList = new ArrayList<>();
+        for (Appointment appointment : appointmentList) {
+            for (Vaccine vaccine : appointment.getVaccinesApplied()) {
+                if (vaccine.getExpiryDate().isBefore(soon)) {
+                    fList.add(appointment);
+                }
+            }
+        }
+        return fList;
+    }
+
+    public String removeSpaces (String string) {
+        String newString = "";
+        for (int i = 0; i < string.length(); i++) {
+            String temp = string.substring(i, i+1);
+            if (!temp.equals(string)) {
+                newString+=temp;
+            }
+        }
+        return newString;
     }
 }

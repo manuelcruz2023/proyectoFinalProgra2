@@ -1,5 +1,6 @@
 package presenter;
 
+import java.time.LocalDate;
 import java.util.List;
 import interfaces.Contract;
 import pojos.Appointment;
@@ -40,5 +41,20 @@ public class Presenter implements Contract.Presenter{
     @Override
     public void addVaccine(Vaccine vaccine) {
         model.addVaccineModel(vaccine);
+    }
+
+    @Override
+    public List<Appointment> loadFilterByDate() {
+        return model.filterByDate();
+    }
+
+    @Override
+    public List<Appointment> loadFilterByResponsible(String documentNumber) {
+        return model.filterByResponsible(documentNumber);
+    }
+
+    @Override
+    public List<Appointment> loadFilterByVaccineSoonToExpire() {
+        return model.filterByVaccineSoonToExpire();
     }
 }

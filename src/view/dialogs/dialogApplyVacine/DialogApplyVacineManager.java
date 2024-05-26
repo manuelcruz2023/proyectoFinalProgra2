@@ -22,7 +22,7 @@ public class DialogApplyVacineManager extends JDialog{
     }
 
     private void initDialog() {
-        this.setSize(600,800);
+        this.setSize(600,600);
         this.setLocationRelativeTo(panelAppointmentListBody.dialogAppointmentListManager);
         this.setResizable(false);
         this.setLayout(new BorderLayout());
@@ -43,7 +43,7 @@ public class DialogApplyVacineManager extends JDialog{
     }
 
     private void createFooter() {
-        panelApplyVacineFooter = new PanelApplyVacineFooter();
+        panelApplyVacineFooter = new PanelApplyVacineFooter(this);
         this.add(panelApplyVacineFooter, BorderLayout.SOUTH);
     }
 

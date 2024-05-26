@@ -19,17 +19,18 @@ import view.dialogs.configTextFieldView.ConfigTextFieldNumber;
 
 public class PanelAddVaccineBody extends JPanel {
 
-    public DialogAddVaccineManager dialogEmergentWindowAddVaccineManager;
+    public DialogAddVaccineManager dialogAddVaccineManager;
 
     public ConfigLimitedTextField textFieldVaccineName;
     public JComboBox<String> comboBoxSpecies;
     public ConfigTextFieldNumber textFieldDuration;
     public JDateChooser dateChooserExpiryDate;
     public GridBagConstraints constraints;
+    public Vaccine vaccine;
 
     public PanelAddVaccineBody(
-            DialogAddVaccineManager dialogEmergentWindowAddVaccineManager) {
-        this.dialogEmergentWindowAddVaccineManager = dialogEmergentWindowAddVaccineManager;
+            DialogAddVaccineManager dialogAddVaccineManager) {
+        this.dialogAddVaccineManager = dialogAddVaccineManager;
         initPanel();
         begin();
         createLabels();
@@ -114,10 +115,10 @@ public class PanelAddVaccineBody extends JPanel {
     }
 
     public Vaccine createVaccine() {
-        Vaccine vaccine = new Vaccine();
+        vaccine = new Vaccine();
         vaccine.setName(textFieldVaccineName.getText());
         vaccine.setSpecies(comboBoxSpecies.getSelectedItem().toString());
-        vaccine.setExpiryDate("" + dateChooserExpiryDate.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        vaccine.setExpiryDate(dateChooserExpiryDate.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         return vaccine;
     }
 }

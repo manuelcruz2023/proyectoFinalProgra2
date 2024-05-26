@@ -1,6 +1,7 @@
 package pojos;
 
 import java.time.LocalDate;
+import java.util.List;
 public class Appointment {
 
     private LocalDate appointmentDate;
@@ -10,7 +11,7 @@ public class Appointment {
     private String relationship;
     private String petName;
     private String petTypeAndSex;
-    private String vaccinesApplied;
+    private List<Vaccine> vaccinesApplied;
 
     public LocalDate getDate() {
         return appointmentDate;
@@ -54,10 +55,10 @@ public class Appointment {
     public void setPetTypeAndSex(String petTypeAndSex) {
         this.petTypeAndSex = petTypeAndSex;
     }
-    public String getVaccinesApplied() {
+    public List<Vaccine> getVaccinesApplied() {
         return vaccinesApplied;
     }
-    public void setVaccinesApplied(String vaccinesApplied) {
+    public void setVaccinesApplied(List<Vaccine> vaccinesApplied) {
         this.vaccinesApplied = vaccinesApplied;
     }
 }

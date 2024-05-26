@@ -2,21 +2,23 @@ package view.dialogs.dialogVaccinesList;
 
 import java.awt.Dimension;
 import java.util.List;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import pojos.Vaccine;
 import view.GlobalConfigView;
+import view.dialogs.dialogAddVaccine.DialogAddVaccineManager;
 
 public class PanelVaccinesListBody extends JPanel {
 
-    private DialogVaccinesListManager dialogVaccinesListManager;
+    public DialogVaccinesListManager dialogVaccinesListManager;
+    public DialogAddVaccineManager dialogAddVaccine;
+
     private DefaultTableModel defaultTableModel;
     public JTable table;
     private JScrollPane scrollPane;
-    private List<Vaccine> vaccineList;
+    public List<Vaccine> vaccineList;
 
     public PanelVaccinesListBody(DialogVaccinesListManager dialogVaccinesListManager) {
         this.dialogVaccinesListManager = dialogVaccinesListManager;
@@ -35,7 +37,7 @@ public class PanelVaccinesListBody extends JPanel {
         setVisible(true);
     }
 
-    private List<Vaccine> getListVaccines() {
+    public List<Vaccine> getListVaccines() {
         return dialogVaccinesListManager.panelMainFooter.mainView.getPresenter().loadListVaccine();
     }
 
