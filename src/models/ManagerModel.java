@@ -21,12 +21,14 @@ import pojos.Vaccine;
 
 public class ManagerModel implements Contract.Model {
 
+    @SuppressWarnings("unused")
     private String path;
     private List<Appointment> appointmentList;
     private List<Vaccine> vaccinesList;
     private File fileAppointment;
     private List<String> jsonArrayAppointment;
     private List<String> jsonArrayVaccine;
+    private File fileVaccine;
 
     @SuppressWarnings("unused")
     private Contract.Presenter presenter;
@@ -38,12 +40,23 @@ public class ManagerModel implements Contract.Model {
     public ManagerModel() throws IOException, ParseException {
         this.appointmentList = new ArrayList<>();
         this.vaccinesList = new ArrayList<>();
-        createFile("appointments.json");
+        createFileAppointment("appointments.json");
+        createFileVaccine("vaccines.json");
         jsonToAppointmentList();
+        jsonToVaccineList();
     }
 
-    public JSONArray readFilejson(String fileName) throws IOException, org.json.simple.parser.ParseException {
+    private JSONArray readFilejsonAppointment(String fileName) throws IOException, org.json.simple.parser.ParseException {
         if (fileAppointment.exists() && fileAppointment.length() != 0) {
+            JSONParser jsonParser = new JSONParser();
+            Object obj = jsonParser.parse(new FileReader(fileName));
+            return (JSONArray) obj;
+        }
+        return null;
+    }
+
+    private JSONArray readFileVaccinejson(String fileName) throws IOException, org.json.simple.parser.ParseException {
+        if (fileVaccine.exists() && fileVaccine.length() != 0) {
             JSONParser jsonParser = new JSONParser();
             Object obj = jsonParser.parse(new FileReader(fileName));
             return (JSONArray) obj;
@@ -52,11 +65,15 @@ public class ManagerModel implements Contract.Model {
     }
     
 
-    public void createFile(String filename) {
+    private void createFileAppointment(String filename) {
         fileAppointment = new File(filename);
     }
 
-    public String removeSpaces(String string) {
+    private void createFileVaccine(String filename) {
+        fileVaccine = new File(filename);
+    }
+
+    private String removeSpaces(String string) {
         String newString = "";
         for (int i = 0; i < string.length(); i++) {
             String temp = string.substring(i, i + 1);
@@ -70,7 +87,7 @@ public class ManagerModel implements Contract.Model {
     @SuppressWarnings("unchecked")
     private void jsonToAppointmentList() throws IOException, ParseException {
         if (fileAppointment.exists() && fileAppointment.length() != 0) {
-            JSONArray jsonArrayAppointment = readFilejson("appointments.json");
+            JSONArray jsonArrayAppointment = readFilejsonAppointment("appointments.json");
             for (int i = 0; i < jsonArrayAppointment.size(); i++) {
                 JSONObject appointmentJson = (JSONObject) jsonArrayAppointment.get(i);
                 Appointment appointment = new Appointment();
@@ -119,8 +136,8 @@ public class ManagerModel implements Contract.Model {
     }
 
     private void jsonToVaccineList() throws IOException, ParseException {
-        if (fileAppointment.exists() && fileAppointment.length() != 0) {
-            JSONArray jsonArrayVaccine = readFilejson("vaccines.json");
+        if (fileVaccine.exists() && fileVaccine.length() != 0) {
+            JSONArray jsonArrayVaccine = readFileVaccinejson("vaccines.json");
             for (int i = 0; i < jsonArrayAppointment.size(); i++) {
                 JSONObject vaccineJson = (JSONObject) jsonArrayVaccine.get(i);
                 Vaccine vaccine = new Vaccine();
@@ -140,12 +157,12 @@ public class ManagerModel implements Contract.Model {
                 jsonArrayVaccine.add(
                     "{\"name\":\"" + vaccine.getName()
                     + "\",\"specie\":\"" + vaccine.getSpecies()
-                    + "\",\"expityDate\":\"" + vaccine.getExpiryDate() + "}" + "," + "\n");
+                    + "\",\"expityDate\":\"" + vaccine.getExpiryDate() + "\"" + "}" + "," + "\n");
             } else {
                 jsonArrayVaccine.add(
                     "{\"name\":\"" + vaccine.getName()
                     + "\",\"specie\":\"" + vaccine.getSpecies()
-                    + "\",\"expityDate\":\"" + vaccine.getExpiryDate() + "}" + "\n");
+                    + "\",\"expityDate\":\"" + vaccine.getExpiryDate() + "\"" + "}" + "\n");
             }
         }
         return jsonArrayVaccine;
@@ -175,6 +192,7 @@ public class ManagerModel implements Contract.Model {
     @Override
     public void addVaccineModel(Vaccine vaccine) {
         vaccinesList.add(vaccine);
+        writeListVaccine();
     }
 
     @Override
@@ -192,8 +210,17 @@ public class ManagerModel implements Contract.Model {
     }
 
     @Override
-    public void writeListVaccine(String fileName) {
-        throw new UnsupportedOperationException("Unimplemented method 'writeListVaccine'");
+    public void writeListVaccine() {
+        vaccineToJsonList();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileVaccine))) {
+            writer.write("[" + "\n");
+            for (String vaccine : jsonArrayVaccine) {
+                writer.write(vaccine);
+            }
+            writer.write("]");
+        } catch (IOException e) {
+            System.err.format("IOException: %s%n", e);
+        }
     }
 
     @Override
@@ -224,18 +251,18 @@ public class ManagerModel implements Contract.Model {
 
     @Override
     public List<Appointment> filterByVaccineSoonToExpire() {
-        LocalDate today = LocalDate.now();
-        LocalDate soon = today.plusDays(30); // Ajusta este valor según lo que consideres "próximo a expirar"
-        List<Appointment> fList = new ArrayList<>();
-        for (Appointment appointment : appointmentList) {
-            for (Vaccine vaccine : appointment.getVaccinesApplied()) {
-                // if (vaccine.getExpiryDate().isBefore(soon)) {
-                //     fList.add(appointment);
-                //     break;
-                // }
-            }
-        }
-        return fList;
+        // LocalDate today = LocalDate.now();
+        // LocalDate soon = today.plusDays(30); // Ajusta este valor según lo que consideres "próximo a expirar"
+        // List<Appointment> fList = new ArrayList<>();
+        // for (Appointment appointment : appointmentList) {
+        //     for (Vaccine vaccine : appointment.getVaccinesApplied()) {
+        //         // if (vaccine.getExpiryDate().isBefore(soon)) {
+        //         //     fList.add(appointment);
+        //         //     break;
+        //         // }
+        //     }
+        // }
+        return null;
     }
 
 }

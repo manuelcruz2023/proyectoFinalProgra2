@@ -1,11 +1,6 @@
 package interfaces;
 
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
-
-import org.json.simple.parser.ParseException;
-
 import pojos.Appointment;
 import pojos.Vaccine;
 
@@ -19,8 +14,8 @@ public interface Contract {
         public List<Vaccine> getListVaccine();
         public void addVaccineModel(Vaccine vaccine);
 
-        public void writeListAppointment() throws IOException;
-        public void writeListVaccine(String fileName);
+        public void writeListAppointment();
+        public void writeListVaccine();
 
         public List<Appointment> filterByDate();
         public List<Appointment> filterByResponsible(String documentNumber);

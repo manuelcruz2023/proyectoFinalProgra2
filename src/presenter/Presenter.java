@@ -8,6 +8,7 @@ import pojos.Vaccine;
 public class Presenter implements Contract.Presenter{
 
     private Contract.Model model;
+    @SuppressWarnings("unused")
     private Contract.View view;
     
     @Override

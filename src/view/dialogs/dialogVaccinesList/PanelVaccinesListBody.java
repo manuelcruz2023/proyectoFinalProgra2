@@ -55,7 +55,7 @@ public class PanelVaccinesListBody extends JPanel {
     public JScrollPane getScrollPane() {
         JTable newTable = new JTable(table.getModel());
         JScrollPane jScrollPane = new JScrollPane(newTable);
-        return  jScrollPane;
+        return jScrollPane;
     }
 
     public void fillTableWithVaccines() {

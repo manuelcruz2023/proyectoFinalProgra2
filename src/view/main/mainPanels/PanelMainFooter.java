@@ -52,6 +52,7 @@ public class PanelMainFooter extends JPanel {
         roundButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createDialogVaccinesList();
+                dialogVaccinesListManager.panelVaccinesListBody.fillTableWithVaccines();
                 beginDialogVaccineList();
             }
         });
