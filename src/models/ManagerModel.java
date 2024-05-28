@@ -127,7 +127,14 @@ public class ManagerModel implements Contract.Model {
                 appointment.setRelationship((String) appointmentJson.get("relationship"));
                 appointment.setPetName((String) appointmentJson.get("petName"));
                 appointment.setPetTypeAndSex((String) appointmentJson.get("petTypeAndSex"));
-                appointment.setVaccinesApplied((List<Vaccine>) appointmentJson.get("vaccinesApplied"));
+                List<JSONObject> jsonVaccines = (List<JSONObject>) appointmentJson.get("vaccinesApplied");
+                List<Vaccine> vaccines = new ArrayList<>();
+                for (JSONObject jsonVaccine : jsonVaccines) {
+                    Vaccine vaccine = new Vaccine();
+                    vaccine.setName((String) jsonVaccine.get("name"));
+                    vaccines.add(vaccine);
+                }
+                appointment.setVaccinesApplied(vaccines);
                 appointmentList.add(appointment);
             }
 
