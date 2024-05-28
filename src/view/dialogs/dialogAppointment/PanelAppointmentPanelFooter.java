@@ -48,6 +48,8 @@ public class PanelAppointmentPanelFooter extends JPanel {
                     // Actualizar la tabla
                     dialogAppointmentManager.panelMainFooter.dialogAppointmentListManager.panelAppointmentListBody
                             .fillTableWithAppointments();
+
+                    dialogAppointmentManager.panelMainFooter.mainView.getPresenter().updateJson();
                     dialogAppointmentManager.dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Campos incompletos",

@@ -57,4 +57,9 @@ public class Presenter implements Contract.Presenter{
     public List<Appointment> loadFilterByVaccineSoonToExpire() {
         return model.filterByVaccineSoonToExpire();
     }
+
+    @Override
+    public void updateJson() {
+        model.writeListAppointment();
+    }
 }

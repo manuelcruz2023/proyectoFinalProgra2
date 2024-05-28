@@ -175,7 +175,6 @@ public class ManagerModel implements Contract.Model {
     @Override
     public void addAppointmentModel(Appointment appointment) {
         appointmentList.add(appointment);
-        writeListAppointment();
     }
 
     @Override
@@ -191,7 +190,6 @@ public class ManagerModel implements Contract.Model {
     @Override
     public void addVaccineModel(Vaccine vaccine) {
         vaccinesList.add(vaccine);
-        writeListVaccine();
     }
 
     @Override

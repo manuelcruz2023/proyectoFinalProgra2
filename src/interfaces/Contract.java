@@ -35,6 +35,8 @@ public interface Contract {
         public List<Appointment> loadFilterByDate();
         public List<Appointment> loadFilterByResponsible(String documentNumber);
         public List<Appointment> loadFilterByVaccineSoonToExpire();
+
+        public void updateJson();
     }
 
     public interface View {

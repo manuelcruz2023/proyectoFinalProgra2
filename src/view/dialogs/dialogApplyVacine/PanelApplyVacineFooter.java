@@ -52,6 +52,7 @@ public class PanelApplyVacineFooter extends JPanel {
                 vaccinesApplied.add(dialogApplyVacineManager.panelAppointmentListBody.dialogAppointmentListManager.panelMainFooter.dialogVaccinesListManager.panelVaccinesListBody.vaccineList.get(dialogApplyVacineManager.panelApplyVacineBody.index)); // Add vaccine to vaccinesApplied
                 dialogApplyVacineManager.panelAppointmentListBody.appointments.get(dialogApplyVacineManager.panelAppointmentListBody.index).setVaccinesApplied(vaccinesApplied); // Set vaccinesApplied
                 dialogApplyVacineManager.panelAppointmentListBody.fillTableWithAppointments(); // Fill table with appointments
+                dialogApplyVacineManager.panelAppointmentListBody.dialogAppointmentListManager.panelMainFooter.mainView.getPresenter().updateJson();
                 dialogApplyVacineManager.dispose();
             }
         });
