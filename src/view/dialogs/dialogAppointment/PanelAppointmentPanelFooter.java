@@ -3,6 +3,7 @@ package view.dialogs.dialogAppointment;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import pojos.Appointment;
@@ -36,17 +37,22 @@ public class PanelAppointmentPanelFooter extends JPanel {
         buttonSaveApointment.setBorder(new RoundedBorderButton(20));
         buttonSaveApointment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                if (dialogAppointmentManager.panelMainFooter.dialogAppointmentListManager == null) {
-                    dialogAppointmentManager.panelMainFooter.createDialogAppointmentList();
-                }
-                // Crear y guardar la nueva cita
-                Appointment newAppointment = dialogAppointmentManager.panelAppointmentPanelBody.createAppointment();
-                dialogAppointmentManager.panelMainFooter.mainView.getPresenter().addAppointment(newAppointment);
+                if (dialogAppointmentManager.panelAppointmentPanelBody.createAppointment() != null) {
+                    if (dialogAppointmentManager.panelMainFooter.dialogAppointmentListManager == null) {
+                        dialogAppointmentManager.panelMainFooter.createDialogAppointmentList();
+                    }
+                    // Crear y guardar la nueva cita
+                    Appointment newAppointment = dialogAppointmentManager.panelAppointmentPanelBody.createAppointment();
+                    dialogAppointmentManager.panelMainFooter.mainView.getPresenter().addAppointment(newAppointment);
 
-                // Actualizar la tabla
-                dialogAppointmentManager.panelMainFooter.dialogAppointmentListManager.panelAppointmentListBody
-                        .fillTableWithAppointments();
-                dialogAppointmentManager.dispose();
+                    // Actualizar la tabla
+                    dialogAppointmentManager.panelMainFooter.dialogAppointmentListManager.panelAppointmentListBody
+                            .fillTableWithAppointments();
+                    dialogAppointmentManager.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Campos incompletos",
+                            JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
         this.add(buttonSaveApointment);

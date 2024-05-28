@@ -1,6 +1,7 @@
 package view.dialogs.dialogAppointment;
 
 import java.awt.BorderLayout;
+
 import javax.swing.JDialog;
 
 import view.main.mainPanels.PanelMainFooter;
@@ -22,8 +23,8 @@ public class DialogAppointmentManager extends JDialog {
 
     private void initDialog() {
         this.setSize(800, 600);
-        this.setLocationRelativeTo(panelMainFooter.mainView);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.setLocationRelativeTo(panelMainFooter.mainView);
         this.setLayout(new BorderLayout());
         this.setResizable(false);
     }

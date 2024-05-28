@@ -19,9 +19,9 @@ public class ConfigTextFieldNumber extends JTextField {
 
             @Override
             public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text,
-            AttributeSet attrs)
+                    AttributeSet attrs)
                     throws BadLocationException {
-                if (text.matches("\\d+")) {
+                if (text != null && text.matches("\\d+")) {
                     super.replace(fb, offset, length, text, attrs);
                 }
             }

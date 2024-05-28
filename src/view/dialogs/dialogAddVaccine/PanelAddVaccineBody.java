@@ -5,15 +5,12 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.text.SimpleDateFormat;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import com.toedter.calendar.JDateChooser;
 import pojos.Vaccine;
 import view.GlobalConfigView;
 import view.dialogs.configTextFieldView.ConfigLimitedTextField;
-import view.dialogs.configTextFieldView.ConfigTextFieldNumber;
 
 public class PanelAddVaccineBody extends JPanel {
 
@@ -21,8 +18,7 @@ public class PanelAddVaccineBody extends JPanel {
 
     public ConfigLimitedTextField textFieldVaccineName;
     public JComboBox<String> comboBoxSpecies;
-    public ConfigTextFieldNumber textFieldDuration;
-    public JDateChooser dateChooserExpiryDate;
+    public JComboBox<String> comboBoxDuration;
     public GridBagConstraints constraints;
     public Vaccine vaccine;
 
@@ -47,10 +43,10 @@ public class PanelAddVaccineBody extends JPanel {
         this.setVisible(true);
     }
 
-    private void createLabel(String text, int x, int y){
+    private void createLabel(String text, int x, int y) {
         JLabel label = new JLabel(text);
         label.setFont(getFont());
-        label.setSize(new Dimension(150,30));
+        label.setSize(new Dimension(150, 30));
         constraints = new GridBagConstraints();
         constraints.anchor = GridBagConstraints.WEST; // Align to the left
         constraints.insets = new Insets(10, 0, 10, 10);
@@ -59,10 +55,10 @@ public class PanelAddVaccineBody extends JPanel {
         add(label, constraints);
     }
 
-    private void createLabels () {
+    private void createLabels() {
         createLabel("Nombre de la vacuna:", 0, 0);
-        createLabel("Para que especie es la vacuna?", 0, 1);
-        createLabel("Fecha de caducidad:", 0, 2);
+        createLabel("¿Para que especie es la vacuna?:", 0, 1);
+        createLabel("Duracion de la vacuna (en dias):", 0, 2);
     }
 
     // TextFields
@@ -95,29 +91,33 @@ public class PanelAddVaccineBody extends JPanel {
         this.add(comboBoxSpecies, constraints);
     }
 
-    private void createTextFieldExpiryDate() {
-        dateChooserExpiryDate = new JDateChooser();
-        dateChooserExpiryDate.setPreferredSize(new Dimension(250, 30));
-    constraints = new GridBagConstraints();
+    private void createTextFieldDuration() {
+        comboBoxDuration = new JComboBox<String>();
+        comboBoxDuration.addItem("15");
+        comboBoxDuration.addItem("30");
+        comboBoxDuration.setSelectedItem(null);
+        comboBoxDuration.setFont(new Font("Roboto", Font.PLAIN, 18));
+        comboBoxDuration.setPreferredSize(new Dimension(250, 30));
+        constraints = new GridBagConstraints();
         constraints.anchor = GridBagConstraints.WEST; // Align to the left
         constraints.fill = GridBagConstraints.HORIZONTAL; // Stretch horizontally
         constraints.gridx = 1; // Column 1
         constraints.gridy = 2; // Row 3
-        this.add(dateChooserExpiryDate, constraints);
+        this.add(comboBoxDuration, constraints);
     }
 
     private void addTextFields() {
         createTextFieldVaccineName();
         createTextFieldSpecies();
-        createTextFieldExpiryDate();
+        createTextFieldDuration();
     }
 
     public Vaccine createVaccine() {
+        
         vaccine = new Vaccine();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy");
         vaccine.setName(textFieldVaccineName.getText());
         vaccine.setSpecies(comboBoxSpecies.getSelectedItem().toString());
-        vaccine.setExpiryDate(formatter.format(dateChooserExpiryDate.getDate()).toString());
+        vaccine.setDuration(comboBoxDuration.getSelectedItem().toString());
         return vaccine;
     }
 }

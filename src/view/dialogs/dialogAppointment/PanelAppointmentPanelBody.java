@@ -6,20 +6,17 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import com.toedter.calendar.JDateChooser;
-
 import pojos.Appointment;
 import view.GlobalConfigView;
 import view.dialogs.configTextFieldView.ConfigLimitedTextField;
 import view.dialogs.configTextFieldView.ConfigTextFieldNumber;
 
 public class PanelAppointmentPanelBody extends JPanel {
-
-    public JDateChooser jDateChooser;
+    
     public ConfigLimitedTextField textFieldCompleteName;
     public JComboBox<String> jComboBoxDocumentType;
     public ConfigTextFieldNumber textFieldNumber;
@@ -48,10 +45,10 @@ public class PanelAppointmentPanelBody extends JPanel {
         setVisible(true);
     }
 
-    private void createLabel(String text, int x, int y){
+    private void createLabel(String text, int x, int y) {
         JLabel label = new JLabel(text);
         label.setFont(getFont());
-        label.setSize(new Dimension(150,30));
+        label.setSize(new Dimension(150, 30));
         constraints = new GridBagConstraints();
         constraints.anchor = GridBagConstraints.WEST; // Align to the left
         constraints.insets = new Insets(10, 0, 20, 0);
@@ -60,29 +57,16 @@ public class PanelAppointmentPanelBody extends JPanel {
         add(label, constraints);
     }
 
-    private void createLabels () {
-        createLabel("Fecha de la cita:", 0, 0);
-        createLabel("Ingrese su nombre completo:", 0, 1);
-        createLabel("Tipo de documento:", 0, 2);
-        createLabel("Número de documento: ", 0, 3);
-        createLabel("Relacion: ", 0, 4);
-        createLabel("Nombre de la mascota: ", 0, 5);
-        createLabel("Especie y sexo de la mascota: ", 0, 6);
+    private void createLabels() {
+        createLabel("Ingrese su nombre completo:", 0, 0);
+        createLabel("Tipo de documento:", 0, 1);
+        createLabel("Número de documento: ", 0, 2);
+        createLabel("Relacion: ", 0, 3);
+        createLabel("Nombre de la mascota: ", 0, 4);
+        createLabel("Especie y sexo de la mascota: ", 0, 5);
     }
 
-    //TxtFields
-
-    private void createJDateChooser() {
-        jDateChooser = new JDateChooser();
-        jDateChooser.setFont(getFont());
-        jDateChooser.setBackground(Color.WHITE);
-        jDateChooser.setPreferredSize(new Dimension(400, 30));
-        constraints = new GridBagConstraints();
-        constraints.anchor = GridBagConstraints.WEST; // Align to the left
-        constraints.gridx = 1; // Column 1
-        constraints.gridy = 0; // Row 0
-        this.add(jDateChooser, constraints);
-    }
+    // TxtFields
 
     private void createTextFieldCompleteName() {
         textFieldCompleteName = new ConfigLimitedTextField(50);
@@ -93,7 +77,7 @@ public class PanelAppointmentPanelBody extends JPanel {
         constraints = new GridBagConstraints();
         constraints.anchor = GridBagConstraints.WEST; // Align to the left
         constraints.gridx = 1; // Column 1
-        constraints.gridy = 1; // Row 1
+        constraints.gridy = 0; // Row 1
         this.add(textFieldCompleteName, constraints);
     }
 
@@ -109,12 +93,13 @@ public class PanelAppointmentPanelBody extends JPanel {
         constraints = new GridBagConstraints();
         constraints.anchor = GridBagConstraints.WEST; // Align to the left
         constraints.gridx = 1; // Column 1
-        constraints.gridy = 2; // Row 2
+        constraints.gridy = 1; // Row 2
         this.add(jComboBoxDocumentType, constraints);
     }
 
     private void createTextFieldDocumentNumber() {
         textFieldNumber = new ConfigTextFieldNumber();
+        textFieldNumber.setText(null);
         textFieldNumber.setFont(getFont());
         textFieldNumber.setBackground(Color.WHITE);
         textFieldNumber.setPreferredSize(new Dimension(400, 30));
@@ -122,7 +107,7 @@ public class PanelAppointmentPanelBody extends JPanel {
         constraints.anchor = GridBagConstraints.WEST; // Align to the left
         constraints.fill = GridBagConstraints.HORIZONTAL; // Stretch horizontally
         constraints.gridx = 1; // Column 1
-        constraints.gridy = 3; // Row 3
+        constraints.gridy = 2; // Row 3
         this.add(textFieldNumber, constraints);
     }
 
@@ -139,7 +124,7 @@ public class PanelAppointmentPanelBody extends JPanel {
         constraints.anchor = GridBagConstraints.WEST; // Align to the left
         constraints.fill = GridBagConstraints.HORIZONTAL; // Stretch horizontally
         constraints.gridx = 1; // Column 1
-        constraints.gridy = 4; // Row 4
+        constraints.gridy = 3; // Row 4
         this.add(jComboBoxRelationship, constraints);
     }
 
@@ -153,7 +138,7 @@ public class PanelAppointmentPanelBody extends JPanel {
         constraints.anchor = GridBagConstraints.WEST; // Align to the left
         constraints.fill = GridBagConstraints.HORIZONTAL; // Stretch horizontally
         constraints.gridx = 1; // Column 1
-        constraints.gridy = 5; // Row 5
+        constraints.gridy = 4; // Row 5
         this.add(textFieldPetName, constraints);
     }
 
@@ -171,12 +156,11 @@ public class PanelAppointmentPanelBody extends JPanel {
         constraints.anchor = GridBagConstraints.WEST; // Align to the left
         constraints.fill = GridBagConstraints.HORIZONTAL; // Stretch horizontally
         constraints.gridx = 1; // Column 1
-        constraints.gridy = 6; // Row 6
+        constraints.gridy = 5; // Row 6
         this.add(jComboBoxPetSpeciesAndSex, constraints);
     }
 
     private void addTxtFields() {
-        createJDateChooser();
         createTextFieldCompleteName();
         createJComboBoxDocumentType();
         createTextFieldDocumentNumber();
@@ -187,8 +171,9 @@ public class PanelAppointmentPanelBody extends JPanel {
 
     public Appointment createAppointment() {
         appointment = new Appointment();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy");
-        appointment.setDate(formatter.format(jDateChooser.getDate()).toString());
+        //SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy");
+        LocalDate date = LocalDate.now();
+        appointment.setDate(date.toString());
         appointment.setCompletename(textFieldCompleteName.getText());
         appointment.setTypeDocument(jComboBoxDocumentType.getSelectedItem().toString());
         appointment.setDocumentNumber(textFieldNumber.getText());

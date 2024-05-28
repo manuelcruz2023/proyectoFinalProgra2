@@ -45,7 +45,7 @@ public class PanelVaccinesListBody extends JPanel {
         defaultTableModel = new DefaultTableModel();
         defaultTableModel.addColumn("Nombre de la vacuna");
         defaultTableModel.addColumn("Especie");
-        defaultTableModel.addColumn("Fecha de vencimiento");
+        defaultTableModel.addColumn("Duracion (dias)");
         table = new JTable(defaultTableModel);
         scrollPane = new JScrollPane(table); // Agrega la tabla al JScrollPane
         scrollPane.setPreferredSize(new Dimension(700, 390));
@@ -65,7 +65,7 @@ public class PanelVaccinesListBody extends JPanel {
             defaultTableModel.addRow(new Object[] {
                     vaccine.getName(),
                     vaccine.getSpecies(),
-                    vaccine.getExpiryDate()
+                    vaccine.getDuration()
             });
         }
     }

@@ -1,10 +1,12 @@
 package view.dialogs.dialogAppointmentList;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -12,10 +14,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
 import com.toedter.calendar.JDateChooser;
-
 import pojos.Appointment;
 import pojos.Vaccine;
 import view.GlobalConfigView;
@@ -88,6 +89,19 @@ public class PanelAppointmentListBody extends JPanel {
         defaultTableModel.addColumn("Fecha");
         defaultTableModel.addColumn("Vacunas aplicadas");
         table = new JTable(defaultTableModel);
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                if (c instanceof JComponent) {
+                    JComponent jc = (JComponent) c;
+                    jc.setToolTipText(value.toString());
+                }
+                return c;
+            }
+        };
+        table.setDefaultRenderer(Object.class, renderer);
         scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(new Dimension(900, 390));
         add(scrollPane, BorderLayout.CENTER);
@@ -99,8 +113,16 @@ public class PanelAppointmentListBody extends JPanel {
         for (Appointment appointment : appointments) {
             String vaccinesAppliedString = "";
             if (appointment.getVaccinesApplied() != null) {
-                for (Vaccine vaccine : appointment.getVaccinesApplied()) {
-                    vaccinesAppliedString += vaccine.getName() + ", ";
+                // for (Vaccine vaccine : appointment.getVaccinesApplied()) {
+                // vaccinesAppliedString += vaccine.getName() + ", ";
+                // }
+
+                for (int i = 0; i < appointment.getVaccinesApplied().size(); i++) {
+                    if (i == appointment.getVaccinesApplied().size() - 1) {
+                        vaccinesAppliedString += appointment.getVaccinesApplied().get(i).getName();
+                    } else {
+                        vaccinesAppliedString += appointment.getVaccinesApplied().get(i).getName() + ", ";
+                    }
                 }
             }
             defaultTableModel.addRow(new Object[] {
@@ -180,6 +202,7 @@ public class PanelAppointmentListBody extends JPanel {
 
     private void createButtonFilterBySoonToExpire() {
         buttonFilterBySoonToExpire = new JButton("Filtrar por proxima expiracion");
+        buttonFilterBySoonToExpire.setToolTipText("Filtrar por proxima expiracion (menos de 15 dias)");
         buttonFilterBySoonToExpire.setPreferredSize(new Dimension(200, 40));
         buttonFilterBySoonToExpire.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import view.GlobalConfigView;
 import view.buttons.RoundedBorderButton;
@@ -35,7 +36,8 @@ public class PanelAddVaccineFooter extends JPanel {
         buttonSaveVaccine.setBorder(new RoundedBorderButton(20));
         buttonSaveVaccine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                // Crear y guardar la nueva vacuna
+                if (dialogAddVaccineManager.panelAddVaccineBody.createVaccine() != null) {
+                    // Crear y guardar la nueva vacuna
                 dialogAddVaccineManager.panelVaccinesListFooter.dialogVaccinesListManager.
                 panelMainFooter.mainView.getPresenter().
                 addVaccine(dialogAddVaccineManager.panelAddVaccineBody.createVaccine());
@@ -45,6 +47,9 @@ public class PanelAddVaccineFooter extends JPanel {
                 panelMainFooter.dialogVaccinesListManager.panelVaccinesListBody.
                 fillTableWithVaccines();
                 dialogAddVaccineManager.dispose();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
         this.add(buttonSaveVaccine);

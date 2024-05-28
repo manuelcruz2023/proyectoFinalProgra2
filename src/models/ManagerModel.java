@@ -9,7 +9,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import com.google.gson.Gson;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -46,7 +45,8 @@ public class ManagerModel implements Contract.Model {
         jsonToVaccineList();
     }
 
-    private JSONArray readFilejsonAppointment(String fileName) throws IOException, org.json.simple.parser.ParseException {
+    private JSONArray readFilejsonAppointment(String fileName)
+            throws IOException, org.json.simple.parser.ParseException {
         if (fileAppointment.exists() && fileAppointment.length() != 0) {
             JSONParser jsonParser = new JSONParser();
             Object obj = jsonParser.parse(new FileReader(fileName));
@@ -63,7 +63,6 @@ public class ManagerModel implements Contract.Model {
         }
         return null;
     }
-    
 
     private void createFileAppointment(String filename) {
         fileAppointment = new File(filename);
@@ -82,27 +81,6 @@ public class ManagerModel implements Contract.Model {
             }
         }
         return newString;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void jsonToAppointmentList() throws IOException, ParseException {
-        if (fileAppointment.exists() && fileAppointment.length() != 0) {
-            JSONArray jsonArrayAppointment = readFilejsonAppointment("appointments.json");
-            for (int i = 0; i < jsonArrayAppointment.size(); i++) {
-                JSONObject appointmentJson = (JSONObject) jsonArrayAppointment.get(i);
-                Appointment appointment = new Appointment();
-                appointment.setDate((String) appointmentJson.get("date"));
-                appointment.setCompletename((String) appointmentJson.get("completename"));
-                appointment.setTypeDocument((String) appointmentJson.get("typeDocument"));
-                appointment.setDocumentNumber((String) appointmentJson.get("documentNumber"));
-                appointment.setRelationship((String) appointmentJson.get("relationship"));
-                appointment.setPetName((String) appointmentJson.get("petName"));
-                appointment.setPetTypeAndSex((String) appointmentJson.get("petTypeAndSex"));
-                appointment.setVaccinesApplied((List<Vaccine>) appointmentJson.get("vaccinesApplied"));
-                appointmentList.add(appointment);
-            }
-
-        }
     }
 
     private List<String> appointmentListToJsonList() {
@@ -135,15 +113,36 @@ public class ManagerModel implements Contract.Model {
         return jsonArrayAppointment;
     }
 
+    @SuppressWarnings("unchecked")
+    private void jsonToAppointmentList() throws IOException, ParseException {
+        if (fileAppointment.exists() && fileAppointment.length() != 0) {
+            JSONArray jsonArrayAppointment = readFilejsonAppointment("appointments.json");
+            for (int i = 0; i < jsonArrayAppointment.size(); i++) {
+                JSONObject appointmentJson = (JSONObject) jsonArrayAppointment.get(i);
+                Appointment appointment = new Appointment();
+                appointment.setDate((String) appointmentJson.get("date"));
+                appointment.setCompletename((String) appointmentJson.get("completename"));
+                appointment.setTypeDocument((String) appointmentJson.get("typeDocument"));
+                appointment.setDocumentNumber((String) appointmentJson.get("documentNumber"));
+                appointment.setRelationship((String) appointmentJson.get("relationship"));
+                appointment.setPetName((String) appointmentJson.get("petName"));
+                appointment.setPetTypeAndSex((String) appointmentJson.get("petTypeAndSex"));
+                appointment.setVaccinesApplied((List<Vaccine>) appointmentJson.get("vaccinesApplied"));
+                appointmentList.add(appointment);
+            }
+
+        }
+    }
+
     private void jsonToVaccineList() throws IOException, ParseException {
         if (fileVaccine.exists() && fileVaccine.length() != 0) {
             JSONArray jsonArrayVaccine = readFileVaccinejson("vaccines.json");
-            for (int i = 0; i < jsonArrayAppointment.size(); i++) {
+            for (int i = 0; i < jsonArrayVaccine.size(); i++) {
                 JSONObject vaccineJson = (JSONObject) jsonArrayVaccine.get(i);
                 Vaccine vaccine = new Vaccine();
                 vaccine.setName((String) vaccineJson.get("name"));
-                vaccine.setSpecies((String) vaccineJson.get("species"));
-                vaccine.setExpiryDate((String) vaccineJson.get("expiryDate"));
+                vaccine.setSpecies((String) vaccineJson.get("specie"));
+                vaccine.setDuration((String) vaccineJson.get("dueDate"));
                 vaccinesList.add(vaccine);
             }
 
@@ -155,14 +154,14 @@ public class ManagerModel implements Contract.Model {
         for (Vaccine vaccine : vaccinesList) {
             if (vaccinesList.indexOf(vaccine) != vaccinesList.size() - 1) {
                 jsonArrayVaccine.add(
-                    "{\"name\":\"" + vaccine.getName()
-                    + "\",\"specie\":\"" + vaccine.getSpecies()
-                    + "\",\"expityDate\":\"" + vaccine.getExpiryDate() + "\"" + "}" + "," + "\n");
+                        "{\"name\":\"" + vaccine.getName()
+                                + "\",\"specie\":\"" + vaccine.getSpecies()
+                                + "\",\"dueDate\":\"" + vaccine.getDuration() + "\"" + "}" + "," + "\n");
             } else {
                 jsonArrayVaccine.add(
-                    "{\"name\":\"" + vaccine.getName()
-                    + "\",\"specie\":\"" + vaccine.getSpecies()
-                    + "\",\"expityDate\":\"" + vaccine.getExpiryDate() + "\"" + "}" + "\n");
+                        "{\"name\":\"" + vaccine.getName()
+                                + "\",\"specie\":\"" + vaccine.getSpecies()
+                                + "\",\"dueDate\":\"" + vaccine.getDuration() + "\"" + "}" + "\n");
             }
         }
         return jsonArrayVaccine;
@@ -251,18 +250,22 @@ public class ManagerModel implements Contract.Model {
 
     @Override
     public List<Appointment> filterByVaccineSoonToExpire() {
-        // LocalDate today = LocalDate.now();
-        // LocalDate soon = today.plusDays(30); // Ajusta este valor según lo que consideres "próximo a expirar"
-        // List<Appointment> fList = new ArrayList<>();
-        // for (Appointment appointment : appointmentList) {
-        //     for (Vaccine vaccine : appointment.getVaccinesApplied()) {
-        //         // if (vaccine.getExpiryDate().isBefore(soon)) {
-        //         //     fList.add(appointment);
-        //         //     break;
-        //         // }
-        //     }
-        // }
-        return null;
+        List<Appointment> fList = new ArrayList<>();
+        for (Appointment appointment : appointmentList) {
+            if (appointment.getVaccinesApplied() != null) {
+                for (Vaccine vaccine : appointment.getVaccinesApplied()) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    String dateString = appointment.getDate();
+                    LocalDate vaccineDate = LocalDate.parse(dateString, formatter);
+                    LocalDate newDate = vaccineDate.plusDays(Integer.parseInt(vaccine.getDuration()));
+                    if (newDate.isBefore(LocalDate.now().plusDays(16))) {
+                        fList.add(appointment);
+                    }
+                    System.out.println(newDate);
+                    System.out.println(LocalDate.now().plusDays(16));
+                }
+            }
+        }
+        return fList;
     }
-
 }
