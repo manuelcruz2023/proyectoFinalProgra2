@@ -91,6 +91,7 @@ public class ManagerModel implements Contract.Model {
                     managerProperties.getProperty("json.key.relationship"), appointment.getRelationship(),
                     managerProperties.getProperty("json.key.petName"), appointment.getPetName(),
                     managerProperties.getProperty("json.key.petType"), appointment.getPetType(),
+                    managerProperties.getProperty("json.key.weight"), appointment.getWeight(),
                     managerProperties.getProperty("json.key.vaccinesApplied"),
                     new Gson().toJson(appointment.getVaccinesApplied()));
 
@@ -105,20 +106,27 @@ public class ManagerModel implements Contract.Model {
 
     private void jsonToAppointmentList() throws IOException, ParseException {
         if (fileAppointment.exists() && fileAppointment.length() != 0) {
-            JSONArray jsonArrayAppointment = readFilejsonAppointment(managerProperties.getProperty("fileNameAppointments"));
+            JSONArray jsonArrayAppointment = readFilejsonAppointment(
+                    managerProperties.getProperty("fileNameAppointments"));
             for (int i = 0; i < jsonArrayAppointment.size(); i++) {
                 JSONObject appointmentJson = (JSONObject) jsonArrayAppointment.get(i);
                 Appointment appointment = new Appointment();
                 appointment.setDate((String) appointmentJson.get(managerProperties.getProperty("json.key.date")));
-                appointment.setCompletename((String) appointmentJson.get(managerProperties.getProperty("json.key.completename")));
-                appointment.setTypeDocument((String) appointmentJson.get(managerProperties.getProperty("json.key.typeDocument")));
-                appointment.setDocumentNumber((String) appointmentJson.get(managerProperties.getProperty("json.key.documentNumber")));
-                appointment.setRelationship((String) appointmentJson.get(managerProperties.getProperty("json.key.relationship")));
+                appointment.setCompletename(
+                        (String) appointmentJson.get(managerProperties.getProperty("json.key.completename")));
+                appointment.setTypeDocument(
+                        (String) appointmentJson.get(managerProperties.getProperty("json.key.typeDocument")));
+                appointment.setDocumentNumber(
+                        (String) appointmentJson.get(managerProperties.getProperty("json.key.documentNumber")));
+                appointment.setRelationship(
+                        (String) appointmentJson.get(managerProperties.getProperty("json.key.relationship")));
                 appointment.setPetName((String) appointmentJson.get(managerProperties.getProperty("json.key.petName")));
                 appointment.setPetType((String) appointmentJson.get(managerProperties.getProperty("json.key.petType")));
-                JSONArray vaccinesJsonArray = (JSONArray) appointmentJson.get(managerProperties.getProperty("json.key.vaccinesApplied"));
+                appointment.setWeight((String) appointmentJson.get(managerProperties.getProperty("json.key.weight")).toString());
+                JSONArray vaccinesJsonArray = (JSONArray) appointmentJson
+                        .get(managerProperties.getProperty("json.key.vaccinesApplied"));
                 List<Vaccine> vaccinesList = new ArrayList<>();
-    
+
                 if (vaccinesJsonArray == null) {
                     vaccinesJsonArray = new JSONArray();
                 }
@@ -126,11 +134,13 @@ public class ManagerModel implements Contract.Model {
                     JSONObject vaccineJson = (JSONObject) vaccineObject;
                     Vaccine vaccine = new Vaccine();
                     vaccine.setName((String) vaccineJson.get(managerProperties.getProperty("json.key.vaccine.name")));
-                    vaccine.setSpecies((String) vaccineJson.get(managerProperties.getProperty("json.key.vaccine.specie")));
-                    vaccine.setDuration((String) vaccineJson.get(managerProperties.getProperty("json.key.vaccine.duration")));
+                    vaccine.setSpecies(
+                            (String) vaccineJson.get(managerProperties.getProperty("json.key.vaccine.specie")));
+                    vaccine.setDuration(
+                            (String) vaccineJson.get(managerProperties.getProperty("json.key.vaccine.duration")));
                     vaccinesList.add(vaccine);
                 }
-    
+
                 appointment.setVaccinesApplied(vaccinesList);
                 appointmentList.add(appointment);
             }
@@ -145,7 +155,8 @@ public class ManagerModel implements Contract.Model {
                 Vaccine vaccine = new Vaccine();
                 vaccine.setName((String) vaccineJson.get(managerProperties.getProperty("json.key.vaccine.name")));
                 vaccine.setSpecies((String) vaccineJson.get(managerProperties.getProperty("json.key.vaccine.specie")));
-                vaccine.setDuration((String) vaccineJson.get(managerProperties.getProperty("json.key.vaccine.duration")));
+                vaccine.setDuration(
+                        (String) vaccineJson.get(managerProperties.getProperty("json.key.vaccine.duration")));
                 vaccinesList.add(vaccine);
             }
         }
@@ -158,7 +169,7 @@ public class ManagerModel implements Contract.Model {
                     managerProperties.getProperty("json.key.vaccine.name"), vaccine.getName(),
                     managerProperties.getProperty("json.key.vaccine.specie"), vaccine.getSpecies(),
                     managerProperties.getProperty("json.key.vaccine.duration"), vaccine.getDuration());
-    
+
             if (vaccinesList.indexOf(vaccine) != vaccinesList.size() - 1) {
                 jsonArrayVaccine.add(jsonFormat + "," + "\n");
             } else {
@@ -224,10 +235,10 @@ public class ManagerModel implements Contract.Model {
     @Override
     public List<Appointment> filterByDate(String date) {
         List<Appointment> fList = new ArrayList<>();
-        for (Appointment appointment : appointmentList) { 
+        for (Appointment appointment : appointmentList) {
             if (appointment.getDate().equals(date.toString())) {
                 fList.add(appointment);
-            }  
+            }
         }
         return fList;
     }
@@ -249,7 +260,8 @@ public class ManagerModel implements Contract.Model {
         for (Appointment appointment : appointmentList) {
             if (appointment.getVaccinesApplied() != null) {
                 for (Vaccine vaccine : appointment.getVaccinesApplied()) {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(managerProperties.getProperty("date.format"));
+                    DateTimeFormatter formatter = DateTimeFormatter
+                            .ofPattern(managerProperties.getProperty("date.format"));
                     String dateString = appointment.getDate();
                     LocalDate vaccineDate = LocalDate.parse(dateString, formatter);
                     LocalDate newDate = vaccineDate.plusDays(Integer.parseInt(vaccine.getDuration()));
@@ -257,6 +269,23 @@ public class ManagerModel implements Contract.Model {
                         fList.add(appointment);
                     }
                 }
+            }
+        }
+        return fList;
+    }
+    @Override
+    public List<Appointment> filterByWeight(String weight, String filter) {
+        List<Appointment> fList = new ArrayList<>();
+        for (Appointment appointment : appointmentList) {
+            if (filter.equals("menores")) {
+                if (Integer.parseInt(appointment.getWeight()) < Integer.parseInt(weight)) {
+                    fList.add(appointment);
+                }
+            } else if (filter.equals("mayores")) {
+                if (Integer.parseInt(appointment.getWeight()) >= Integer.parseInt(weight)) {
+                    fList.add(appointment);
+                }
+
             }
         }
         return fList;

@@ -1,7 +1,6 @@
 package view.dialogs.dialogAppointmentList;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Date;
@@ -9,7 +8,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -17,7 +15,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
 import pojos.Appointment;
@@ -41,11 +38,14 @@ public class PanelAppointmentListBody extends JPanel {
     private JButton buttonFilterByDate;
     private JButton buttonFilterByResponsible;
     private JButton buttonFilterBySoonToExpire;
+    private JButton buttonFilterByWeight;
     private JButton buttonClearFilters;
     private String data;
     private JDateChooser dateChooser;
     private Date date;
     private LocalDate localDate;
+    private int optionWeight;
+    private Object[] options;
 
     public PanelAppointmentListBody(DialogAppointmentListManager dialogAppointmentListManager) {
         this.dialogAppointmentListManager = dialogAppointmentListManager;
@@ -79,6 +79,9 @@ public class PanelAppointmentListBody extends JPanel {
             case 3:
                 return dialogAppointmentListManager.panelMainFooter.mainView.getPresenter()
                         .loadFilterByVaccineSoonToExpire();
+            case 4:
+                return dialogAppointmentListManager.panelMainFooter.mainView.getPresenter()
+                        .loadFilterByWeight(data, options[optionWeight].toString());
             case 0:
                 return dialogAppointmentListManager.panelMainFooter.mainView.getPresenter().loadListAppointment();
             default:
@@ -95,20 +98,8 @@ public class PanelAppointmentListBody extends JPanel {
         defaultTableModel.addColumn("Especie y sexo de la mascota");
         defaultTableModel.addColumn("Fecha");
         defaultTableModel.addColumn("Vacunas aplicadas");
+        defaultTableModel.addColumn("Peso");
         table = new JTable(defaultTableModel);
-        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                    boolean hasFocus, int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if (c instanceof JComponent) {
-                    JComponent jc = (JComponent) c;
-                    jc.setToolTipText(value.toString());
-                }
-                return c;
-            }
-        };
-        table.setDefaultRenderer(Object.class, renderer);
         scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(new Dimension(900, 390));
         add(scrollPane, BorderLayout.CENTER);
@@ -120,10 +111,6 @@ public class PanelAppointmentListBody extends JPanel {
         for (Appointment appointment : appointments) {
             String vaccinesAppliedString = "";
             if (appointment.getVaccinesApplied() != null) {
-                // for (Vaccine vaccine : appointment.getVaccinesApplied()) {
-                // vaccinesAppliedString += vaccine.getName() + ", ";
-                // }
-
                 for (int i = 0; i < appointment.getVaccinesApplied().size(); i++) {
                     if (i == appointment.getVaccinesApplied().size() - 1) {
                         vaccinesAppliedString += appointment.getVaccinesApplied().get(i).getName();
@@ -139,7 +126,8 @@ public class PanelAppointmentListBody extends JPanel {
                     appointment.getPetName(),
                     appointment.getPetType(),
                     appointment.getDate(),
-                    vaccinesAppliedString
+                    vaccinesAppliedString,
+                    appointment.getWeight()
             });
         }
         selection = 0;
@@ -168,8 +156,8 @@ public class PanelAppointmentListBody extends JPanel {
         menuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 int selectedRow = table.getSelectedRow();
-                if (selectedRow != -1) { 
-                    DefaultTableModel model = (DefaultTableModel) table.getModel(); 
+                if (selectedRow != -1) {
+                    DefaultTableModel model = (DefaultTableModel) table.getModel();
                     model.removeRow(selectedRow);
                     getListAppointments().remove(index);
                     dialogAppointmentListManager.panelMainFooter.mainView.getPresenter().updateJsonAppointments();
@@ -236,6 +224,27 @@ public class PanelAppointmentListBody extends JPanel {
         });
     }
 
+    private void createButtonFilterByWeight() {
+        buttonFilterByWeight = new JButton("Filtrar por peso");
+        buttonFilterByWeight.setPreferredSize(new Dimension(200, 40));
+        buttonFilterByWeight.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selection = 4;
+                data = JOptionPane.showInputDialog("Ingrese el peso");
+                options = new Object[]{ "menores", "mayores"};
+                optionWeight = JOptionPane.showOptionDialog(null,
+                        "Seleccione una opción",
+                        "Filtrar por peso",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        options,
+                        options[0]);
+                fillTableWithAppointments();
+            }
+        });
+    }
+
     private void createButtonClearFilters() {
         buttonClearFilters = new JButton("Limpiar filtros");
         buttonClearFilters.setPreferredSize(new Dimension(100, 40));
@@ -248,16 +257,18 @@ public class PanelAppointmentListBody extends JPanel {
     }
 
     private void createButtons() {
-        panelButtons = new JPanel(new GridLayout(4, 1));
+        panelButtons = new JPanel(new GridLayout(5, 1));
         panelButtons.setPreferredSize(new Dimension(200, 440));
         createButtonFilterByDate();
         createButtonFilterByResponsible();
         createButtonFilterBySoonToExpire();
+        createButtonFilterByWeight();
         createButtonClearFilters();
         panelButtons.add(buttonFilterByDate);
         panelButtons.add(buttonFilterByResponsible);
         panelButtons.add(buttonFilterBySoonToExpire);
         panelButtons.add(buttonClearFilters);
+        panelButtons.add(buttonFilterByWeight);
         this.add(panelButtons, BorderLayout.EAST);
     }
 

@@ -11,6 +11,7 @@ public class Appointment {
     private String petName;
     private String petType;
     private List<Vaccine> vaccinesApplied;
+    private String weight;
 
     public String getDate() {
         return appointmentDate;
@@ -59,6 +60,12 @@ public class Appointment {
     }
     public void setPetType(String petType) {
         this.petType = petType;
+    }
+    public String getWeight() {
+        return weight;
+    }
+    public void setWeight(String weight) {
+        this.weight = weight;
     }
     public List<Vaccine> getVaccinesApplied() {
         return vaccinesApplied;

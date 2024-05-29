@@ -23,6 +23,7 @@ public class PanelAppointmentPanelBody extends JPanel {
     public JComboBox<String> jComboBoxRelationship;
     public ConfigLimitedTextField textFieldPetName;
     public JComboBox<String> jComboBoxPetSpeciesAndSex;
+    public ConfigTextFieldNumber textFieldWeight;
     public GridBagConstraints constraints;
     public Appointment appointment;
 
@@ -64,6 +65,7 @@ public class PanelAppointmentPanelBody extends JPanel {
         createLabel("Relacion: ", 0, 3);
         createLabel("Nombre de la mascota: ", 0, 4);
         createLabel("Especie y sexo de la mascota: ", 0, 5);
+        createLabel("Peso de la mascota: ", 0, 6);
     }
 
     // TxtFields
@@ -158,6 +160,19 @@ public class PanelAppointmentPanelBody extends JPanel {
         this.add(jComboBoxPetSpeciesAndSex, constraints);
     }
 
+    private void createFieldWeight() {
+        textFieldWeight = new ConfigTextFieldNumber();
+        textFieldWeight.setFont(getFont());
+        textFieldWeight.setBackground(Color.WHITE);
+        textFieldWeight.setPreferredSize(new Dimension(400, 30));
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.anchor = GridBagConstraints.WEST; // Align to the left
+        constraints.fill = GridBagConstraints.HORIZONTAL; // Stretch horizontally
+        constraints.gridx = 1; // Column 1
+        constraints.gridy = 6; // Row 7
+        this.add(textFieldWeight, constraints);
+    }
+
     private void addTxtFields() {
         createTextFieldCompleteName();
         createJComboBoxDocumentType();
@@ -165,12 +180,13 @@ public class PanelAppointmentPanelBody extends JPanel {
         createjComboBoxRelationship();
         createTextFieldPetName();
         createTextFieldPetSpeciesAndSex();
+        createFieldWeight();
     }
 
     public boolean validateFields() {
-        if (textFieldCompleteName.getText().isEmpty() || jComboBoxDocumentType.getSelectedItem() == null
+        if (jComboBoxDocumentType.getSelectedItem() == null
                 || textFieldNumber.getText().isEmpty() || jComboBoxRelationship.getSelectedItem() == null
-                || textFieldPetName.getText().isEmpty() || jComboBoxPetSpeciesAndSex.getSelectedItem() == null) {
+                || textFieldPetName.getText().isEmpty() || jComboBoxPetSpeciesAndSex.getSelectedItem() == null || textFieldWeight.getText().isEmpty()){
             return false;
         }
         return true;
@@ -189,6 +205,7 @@ public class PanelAppointmentPanelBody extends JPanel {
         appointment.setRelationship(jComboBoxRelationship.getSelectedItem().toString());
         appointment.setPetName(textFieldPetName.getText());
         appointment.setPetType(jComboBoxPetSpeciesAndSex.getSelectedItem().toString());
+        appointment.setWeight(textFieldWeight.getText().toString());
         return appointment;
     }
 }

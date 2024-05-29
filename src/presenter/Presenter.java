@@ -67,4 +67,9 @@ public class Presenter implements Contract.Presenter{
     public void updateJsonVaccines() {
         model.writeListVaccine();
     }
+
+    @Override
+    public List<Appointment> loadFilterByWeight(String weight, String filter) {
+        return model.filterByWeight(weight, filter);
+    }
 }

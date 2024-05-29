@@ -20,6 +20,7 @@ public interface Contract {
         public List<Appointment> filterByDate(String date);
         public List<Appointment> filterByResponsible(String documentNumber);
         public List<Appointment> filterByVaccineSoonToExpire();
+        public List<Appointment> filterByWeight(String weight, String filter);
     }
 
     public interface Presenter {
@@ -35,6 +36,7 @@ public interface Contract {
         public List<Appointment> loadFilterByDate(String date);
         public List<Appointment> loadFilterByResponsible(String documentNumber);
         public List<Appointment> loadFilterByVaccineSoonToExpire();
+        public List<Appointment> loadFilterByWeight(String weight, String filter);
 
         public void updateJsonAppointments();
         public void updateJsonVaccines();
