@@ -20,8 +20,6 @@ import pojos.Vaccine;
 
 public class ManagerModel implements Contract.Model {
 
-    @SuppressWarnings("unused")
-    private String path;
     private List<Appointment> appointmentList;
     private List<Vaccine> vaccinesList;
     private File fileAppointment;
@@ -31,10 +29,6 @@ public class ManagerModel implements Contract.Model {
 
     @SuppressWarnings("unused")
     private Contract.Presenter presenter;
-
-    public void setPath(String path) {
-        this.path = path;
-    }
 
     public ManagerModel() throws IOException, ParseException {
         this.appointmentList = new ArrayList<>();
@@ -94,7 +88,7 @@ public class ManagerModel implements Contract.Model {
                                 + "\",\"documentNumber\":\"" + appointment.getDocumentNumber()
                                 + "\",\"relationship\":\"" + appointment.getRelationship()
                                 + "\",\"petName\":\"" + appointment.getPetName()
-                                + "\",\"petTypeAndSex\":\"" + appointment.getPetTypeAndSex()
+                                + "\",\"petType\":\"" + appointment.getPetType()
                                 + "\",\"vaccinesApplied\":" + new Gson().toJson(appointment.getVaccinesApplied()) + "}"
                                 + "," + "\n");
             } else {
@@ -105,7 +99,7 @@ public class ManagerModel implements Contract.Model {
                                 + "\",\"documentNumber\":\"" + appointment.getDocumentNumber()
                                 + "\",\"relationship\":\"" + appointment.getRelationship()
                                 + "\",\"petName\":\"" + appointment.getPetName()
-                                + "\",\"petTypeAndSex\":\"" + appointment.getPetTypeAndSex()
+                                + "\",\"petType\":\"" + appointment.getPetType()
                                 + "\",\"vaccinesApplied\":" + new Gson().toJson(appointment.getVaccinesApplied()) + "}"
                                 + "\n");
             }
@@ -113,7 +107,6 @@ public class ManagerModel implements Contract.Model {
         return jsonArrayAppointment;
     }
 
-    @SuppressWarnings("unchecked")
     private void jsonToAppointmentList() throws IOException, ParseException {
         if (fileAppointment.exists() && fileAppointment.length() != 0) {
             JSONArray jsonArrayAppointment = readFilejsonAppointment("appointments.json");
@@ -126,15 +119,20 @@ public class ManagerModel implements Contract.Model {
                 appointment.setDocumentNumber((String) appointmentJson.get("documentNumber"));
                 appointment.setRelationship((String) appointmentJson.get("relationship"));
                 appointment.setPetName((String) appointmentJson.get("petName"));
-                appointment.setPetTypeAndSex((String) appointmentJson.get("petTypeAndSex"));
-                List<JSONObject> jsonVaccines = (List<JSONObject>) appointmentJson.get("vaccinesApplied");
-                List<Vaccine> vaccines = new ArrayList<>();
-                for (JSONObject jsonVaccine : jsonVaccines) {
+                appointment.setPetType((String) appointmentJson.get("petType"));
+                JSONArray vaccinesJsonArray = (JSONArray) appointmentJson.get("vaccinesApplied");
+                List<Vaccine> vaccinesList = new ArrayList<>();
+
+                for (Object vaccineObject : vaccinesJsonArray) {
+                    JSONObject vaccineJson = (JSONObject) vaccineObject;
                     Vaccine vaccine = new Vaccine();
-                    vaccine.setName((String) jsonVaccine.get("name"));
-                    vaccines.add(vaccine);
+                    vaccine.setName((String) vaccineJson.get("name"));
+                    vaccine.setSpecies((String) vaccineJson.get("specie"));
+                    vaccine.setDuration((String) vaccineJson.get("duration"));
+                    vaccinesList.add(vaccine);
                 }
-                appointment.setVaccinesApplied(vaccines);
+
+                appointment.setVaccinesApplied(vaccinesList);
                 appointmentList.add(appointment);
             }
 
@@ -149,7 +147,7 @@ public class ManagerModel implements Contract.Model {
                 Vaccine vaccine = new Vaccine();
                 vaccine.setName((String) vaccineJson.get("name"));
                 vaccine.setSpecies((String) vaccineJson.get("specie"));
-                vaccine.setDuration((String) vaccineJson.get("dueDate"));
+                vaccine.setDuration((String) vaccineJson.get("duration"));
                 vaccinesList.add(vaccine);
             }
 
@@ -163,12 +161,12 @@ public class ManagerModel implements Contract.Model {
                 jsonArrayVaccine.add(
                         "{\"name\":\"" + vaccine.getName()
                                 + "\",\"specie\":\"" + vaccine.getSpecies()
-                                + "\",\"dueDate\":\"" + vaccine.getDuration() + "\"" + "}" + "," + "\n");
+                                + "\",\"duration\":\"" + vaccine.getDuration() + "\"" + "}" + "," + "\n");
             } else {
                 jsonArrayVaccine.add(
                         "{\"name\":\"" + vaccine.getName()
                                 + "\",\"specie\":\"" + vaccine.getSpecies()
-                                + "\",\"dueDate\":\"" + vaccine.getDuration() + "\"" + "}" + "\n");
+                                + "\",\"duration\":\"" + vaccine.getDuration() + "\"" + "}" + "\n");
             }
         }
         return jsonArrayVaccine;
@@ -266,8 +264,6 @@ public class ManagerModel implements Contract.Model {
                     if (newDate.isBefore(LocalDate.now().plusDays(16))) {
                         fList.add(appointment);
                     }
-                    System.out.println(newDate);
-                    System.out.println(LocalDate.now().plusDays(16));
                 }
             }
         }

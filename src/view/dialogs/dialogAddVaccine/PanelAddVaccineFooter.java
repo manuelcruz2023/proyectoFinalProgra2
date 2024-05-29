@@ -46,6 +46,7 @@ public class PanelAddVaccineFooter extends JPanel {
                 dialogAddVaccineManager.panelVaccinesListFooter.dialogVaccinesListManager.
                 panelMainFooter.dialogVaccinesListManager.panelVaccinesListBody.
                 fillTableWithVaccines();
+                dialogAddVaccineManager.panelVaccinesListFooter.dialogVaccinesListManager.panelMainFooter.mainView.getPresenter().updateJsonVaccines();
                 dialogAddVaccineManager.dispose();
                 }else{
                     JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Campos incompletos", JOptionPane.WARNING_MESSAGE);

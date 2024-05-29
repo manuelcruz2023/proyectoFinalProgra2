@@ -113,11 +113,15 @@ public class PanelAddVaccineBody extends JPanel {
     }
 
     public Vaccine createVaccine() {
-        
         vaccine = new Vaccine();
-        vaccine.setName(textFieldVaccineName.getText());
-        vaccine.setSpecies(comboBoxSpecies.getSelectedItem().toString());
-        vaccine.setDuration(comboBoxDuration.getSelectedItem().toString());
+        if (textFieldVaccineName.getText().isEmpty() || comboBoxSpecies.getSelectedItem() == null
+                || comboBoxDuration.getSelectedItem() == null) {
+            return null;
+        } else {
+            vaccine.setName(textFieldVaccineName.getText());
+            vaccine.setSpecies(comboBoxSpecies.getSelectedItem().toString());
+            vaccine.setDuration(comboBoxDuration.getSelectedItem().toString());
+        }
         return vaccine;
     }
 }

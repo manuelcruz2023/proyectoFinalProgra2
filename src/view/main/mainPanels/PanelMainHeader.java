@@ -29,7 +29,7 @@ public class PanelMainHeader extends JPanel{
     }
 
     private void addLogo() {
-        ImagePanel logo = new ImagePanel("images\\logo2.png");
+        ImagePanel logo = new ImagePanel("images\\logo.png");
         logo.setBounds(0, 0, 200, 200);
         this.add(logo, BorderLayout.WEST);
     }

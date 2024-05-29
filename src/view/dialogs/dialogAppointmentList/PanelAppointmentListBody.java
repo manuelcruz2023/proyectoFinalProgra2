@@ -50,6 +50,7 @@ public class PanelAppointmentListBody extends JPanel {
         addMouseListener();
         createButtons();
         getRowSelected();
+        advice();
     }
 
     private void initPanel() {
@@ -130,7 +131,7 @@ public class PanelAppointmentListBody extends JPanel {
                     appointment.getDocumentNumber(),
                     appointment.getRelationship(),
                     appointment.getPetName(),
-                    appointment.getPetTypeAndSex(),
+                    appointment.getPetType(),
                     appointment.getDate(),
                     vaccinesAppliedString
             });
@@ -194,7 +195,6 @@ public class PanelAppointmentListBody extends JPanel {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selection = 2;
                 data = JOptionPane.showInputDialog("Ingrese su numero de documento");
-                System.out.println(data);
                 fillTableWithAppointments();
             }
         });
@@ -243,5 +243,12 @@ public class PanelAppointmentListBody extends JPanel {
                 index = table.rowAtPoint(evt.getPoint());
             }
         });
+    }
+
+    private void advice() {
+        appointments = getListAppointments();
+        if (appointments.size() == 0||appointments==null) {
+            JOptionPane.showMessageDialog(null, "No hay citas registradas", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }
 }

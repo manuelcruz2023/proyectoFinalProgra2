@@ -1,4 +1,4 @@
 [
-{"name":"test","specie":"Perro","dueDate":"30"},
-{"name":"test2","specie":"Perro","dueDate":"30"}
+{"name":"test","specie":"Perro","duration":"30"},
+{"name":"test2","specie":"Gato","duration":"15"}
 ]

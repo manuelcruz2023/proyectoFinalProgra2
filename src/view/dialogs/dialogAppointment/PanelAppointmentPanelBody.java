@@ -16,7 +16,7 @@ import view.dialogs.configTextFieldView.ConfigLimitedTextField;
 import view.dialogs.configTextFieldView.ConfigTextFieldNumber;
 
 public class PanelAppointmentPanelBody extends JPanel {
-    
+
     public ConfigLimitedTextField textFieldCompleteName;
     public JComboBox<String> jComboBoxDocumentType;
     public ConfigTextFieldNumber textFieldNumber;
@@ -144,10 +144,8 @@ public class PanelAppointmentPanelBody extends JPanel {
 
     private void createTextFieldPetSpeciesAndSex() {
         jComboBoxPetSpeciesAndSex = new JComboBox<>();
-        jComboBoxPetSpeciesAndSex.addItem("Perro Macho");
-        jComboBoxPetSpeciesAndSex.addItem("Perro Hembra");
-        jComboBoxPetSpeciesAndSex.addItem("Gato Macho");
-        jComboBoxPetSpeciesAndSex.addItem("Gato Hembra");
+        jComboBoxPetSpeciesAndSex.addItem("Perro");
+        jComboBoxPetSpeciesAndSex.addItem("Gato");
         jComboBoxPetSpeciesAndSex.setSelectedItem(null);
         jComboBoxPetSpeciesAndSex.setFont(getFont());
         jComboBoxPetSpeciesAndSex.setBackground(Color.WHITE);
@@ -169,9 +167,20 @@ public class PanelAppointmentPanelBody extends JPanel {
         createTextFieldPetSpeciesAndSex();
     }
 
+    public boolean validateFields() {
+        if (textFieldCompleteName.getText().isEmpty() || jComboBoxDocumentType.getSelectedItem() == null
+                || textFieldNumber.getText().isEmpty() || jComboBoxRelationship.getSelectedItem() == null
+                || textFieldPetName.getText().isEmpty() || jComboBoxPetSpeciesAndSex.getSelectedItem() == null) {
+            return false;
+        }
+        return true;
+    }
+
     public Appointment createAppointment() {
+        if (!validateFields()) {
+            return null;
+        }
         appointment = new Appointment();
-        //SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy");
         LocalDate date = LocalDate.now();
         appointment.setDate(date.toString());
         appointment.setCompletename(textFieldCompleteName.getText());
@@ -179,7 +188,7 @@ public class PanelAppointmentPanelBody extends JPanel {
         appointment.setDocumentNumber(textFieldNumber.getText());
         appointment.setRelationship(jComboBoxRelationship.getSelectedItem().toString());
         appointment.setPetName(textFieldPetName.getText());
-        appointment.setPetTypeAndSex(jComboBoxPetSpeciesAndSex.getSelectedItem().toString());
+        appointment.setPetType(jComboBoxPetSpeciesAndSex.getSelectedItem().toString());
         return appointment;
     }
 }

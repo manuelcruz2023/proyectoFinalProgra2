@@ -9,7 +9,7 @@ public class Appointment {
     private String documentNumber;
     private String relationship;
     private String petName;
-    private String petTypeAndSex;
+    private String petType;
     private List<Vaccine> vaccinesApplied;
 
     public String getDate() {
@@ -48,11 +48,17 @@ public class Appointment {
     public void setPetName(String petName) {
         this.petName = petName;
     }
-    public String getPetTypeAndSex() {
-        return petTypeAndSex;
+    public String getAppointmentDate() {
+        return appointmentDate;
     }
-    public void setPetTypeAndSex(String petTypeAndSex) {
-        this.petTypeAndSex = petTypeAndSex;
+    public void setAppointmentDate(String appointmentDate) {
+        this.appointmentDate = appointmentDate;
+    }
+    public String getPetType() {
+        return petType;
+    }
+    public void setPetType(String petType) {
+        this.petType = petType;
     }
     public List<Vaccine> getVaccinesApplied() {
         return vaccinesApplied;

@@ -59,7 +59,12 @@ public class Presenter implements Contract.Presenter{
     }
 
     @Override
-    public void updateJson() {
+    public void updateJsonAppointments() {
         model.writeListAppointment();
+    }
+
+    @Override
+    public void updateJsonVaccines() {
+        model.writeListVaccine();
     }
 }
