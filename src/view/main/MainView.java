@@ -22,7 +22,6 @@ public class MainView extends JFrame implements Contract.View {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // this.setResizable(false);
     }
 
     public void begin() {

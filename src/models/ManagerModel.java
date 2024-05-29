@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import interfaces.Contract;
+import propertiesConfig.ManagerProperties;
 import pojos.Appointment;
 import pojos.Vaccine;
 
@@ -29,12 +30,13 @@ public class ManagerModel implements Contract.Model {
 
     @SuppressWarnings("unused")
     private Contract.Presenter presenter;
+    ManagerProperties managerProperties = new ManagerProperties();
 
     public ManagerModel() throws IOException, ParseException {
         this.appointmentList = new ArrayList<>();
         this.vaccinesList = new ArrayList<>();
-        createFileAppointment("appointments.json");
-        createFileVaccine("vaccines.json");
+        createFileAppointment(managerProperties.getProperty("fileNameAppointments"));
+        createFileVaccine(managerProperties.getProperty("fileNameVaccines"));
         jsonToAppointmentList();
         jsonToVaccineList();
     }
@@ -80,28 +82,22 @@ public class ManagerModel implements Contract.Model {
     private List<String> appointmentListToJsonList() {
         jsonArrayAppointment = new ArrayList<>();
         for (Appointment appointment : appointmentList) {
+            String jsonFormat = String.format(
+                    "{\"%s\":\"%s\",\"%s\":\"%s\",\"%s\":\"%s\",\"%s\":\"%s\",\"%s\":\"%s\",\"%s\":\"%s\",\"%s\":\"%s\",\"%s\":%s}",
+                    managerProperties.getProperty("json.key.date"), appointment.getDate(),
+                    managerProperties.getProperty("json.key.completename"), appointment.getCompletename(),
+                    managerProperties.getProperty("json.key.typeDocument"), appointment.getTypeDocument(),
+                    managerProperties.getProperty("json.key.documentNumber"), appointment.getDocumentNumber(),
+                    managerProperties.getProperty("json.key.relationship"), appointment.getRelationship(),
+                    managerProperties.getProperty("json.key.petName"), appointment.getPetName(),
+                    managerProperties.getProperty("json.key.petType"), appointment.getPetType(),
+                    managerProperties.getProperty("json.key.vaccinesApplied"),
+                    new Gson().toJson(appointment.getVaccinesApplied()));
+
             if (appointmentList.indexOf(appointment) != appointmentList.size() - 1) {
-                jsonArrayAppointment.add(
-                        "{\"date\":\"" + appointment.getDate()
-                                + "\",\"completename\":\"" + appointment.getCompletename()
-                                + "\",\"typeDocument\":\"" + appointment.getTypeDocument()
-                                + "\",\"documentNumber\":\"" + appointment.getDocumentNumber()
-                                + "\",\"relationship\":\"" + appointment.getRelationship()
-                                + "\",\"petName\":\"" + appointment.getPetName()
-                                + "\",\"petType\":\"" + appointment.getPetType()
-                                + "\",\"vaccinesApplied\":" + new Gson().toJson(appointment.getVaccinesApplied()) + "}"
-                                + "," + "\n");
+                jsonArrayAppointment.add(jsonFormat + "," + "\n");
             } else {
-                jsonArrayAppointment.add(
-                        "{\"date\":\"" + appointment.getDate()
-                                + "\",\"completename\":\"" + appointment.getCompletename()
-                                + "\",\"typeDocument\":\"" + appointment.getTypeDocument()
-                                + "\",\"documentNumber\":\"" + appointment.getDocumentNumber()
-                                + "\",\"relationship\":\"" + appointment.getRelationship()
-                                + "\",\"petName\":\"" + appointment.getPetName()
-                                + "\",\"petType\":\"" + appointment.getPetType()
-                                + "\",\"vaccinesApplied\":" + new Gson().toJson(appointment.getVaccinesApplied()) + "}"
-                                + "\n");
+                jsonArrayAppointment.add(jsonFormat + "\n");
             }
         }
         return jsonArrayAppointment;
@@ -109,64 +105,64 @@ public class ManagerModel implements Contract.Model {
 
     private void jsonToAppointmentList() throws IOException, ParseException {
         if (fileAppointment.exists() && fileAppointment.length() != 0) {
-            JSONArray jsonArrayAppointment = readFilejsonAppointment("appointments.json");
+            JSONArray jsonArrayAppointment = readFilejsonAppointment(managerProperties.getProperty("fileNameAppointments"));
             for (int i = 0; i < jsonArrayAppointment.size(); i++) {
                 JSONObject appointmentJson = (JSONObject) jsonArrayAppointment.get(i);
                 Appointment appointment = new Appointment();
-                appointment.setDate((String) appointmentJson.get("date"));
-                appointment.setCompletename((String) appointmentJson.get("completename"));
-                appointment.setTypeDocument((String) appointmentJson.get("typeDocument"));
-                appointment.setDocumentNumber((String) appointmentJson.get("documentNumber"));
-                appointment.setRelationship((String) appointmentJson.get("relationship"));
-                appointment.setPetName((String) appointmentJson.get("petName"));
-                appointment.setPetType((String) appointmentJson.get("petType"));
-                JSONArray vaccinesJsonArray = (JSONArray) appointmentJson.get("vaccinesApplied");
+                appointment.setDate((String) appointmentJson.get(managerProperties.getProperty("json.key.date")));
+                appointment.setCompletename((String) appointmentJson.get(managerProperties.getProperty("json.key.completename")));
+                appointment.setTypeDocument((String) appointmentJson.get(managerProperties.getProperty("json.key.typeDocument")));
+                appointment.setDocumentNumber((String) appointmentJson.get(managerProperties.getProperty("json.key.documentNumber")));
+                appointment.setRelationship((String) appointmentJson.get(managerProperties.getProperty("json.key.relationship")));
+                appointment.setPetName((String) appointmentJson.get(managerProperties.getProperty("json.key.petName")));
+                appointment.setPetType((String) appointmentJson.get(managerProperties.getProperty("json.key.petType")));
+                JSONArray vaccinesJsonArray = (JSONArray) appointmentJson.get(managerProperties.getProperty("json.key.vaccinesApplied"));
                 List<Vaccine> vaccinesList = new ArrayList<>();
-
+    
+                if (vaccinesJsonArray == null) {
+                    vaccinesJsonArray = new JSONArray();
+                }
                 for (Object vaccineObject : vaccinesJsonArray) {
                     JSONObject vaccineJson = (JSONObject) vaccineObject;
                     Vaccine vaccine = new Vaccine();
-                    vaccine.setName((String) vaccineJson.get("name"));
-                    vaccine.setSpecies((String) vaccineJson.get("specie"));
-                    vaccine.setDuration((String) vaccineJson.get("duration"));
+                    vaccine.setName((String) vaccineJson.get(managerProperties.getProperty("json.key.vaccine.name")));
+                    vaccine.setSpecies((String) vaccineJson.get(managerProperties.getProperty("json.key.vaccine.specie")));
+                    vaccine.setDuration((String) vaccineJson.get(managerProperties.getProperty("json.key.vaccine.duration")));
                     vaccinesList.add(vaccine);
                 }
-
+    
                 appointment.setVaccinesApplied(vaccinesList);
                 appointmentList.add(appointment);
             }
-
         }
     }
 
     private void jsonToVaccineList() throws IOException, ParseException {
         if (fileVaccine.exists() && fileVaccine.length() != 0) {
-            JSONArray jsonArrayVaccine = readFileVaccinejson("vaccines.json");
+            JSONArray jsonArrayVaccine = readFileVaccinejson(managerProperties.getProperty("fileNameVaccines"));
             for (int i = 0; i < jsonArrayVaccine.size(); i++) {
                 JSONObject vaccineJson = (JSONObject) jsonArrayVaccine.get(i);
                 Vaccine vaccine = new Vaccine();
-                vaccine.setName((String) vaccineJson.get("name"));
-                vaccine.setSpecies((String) vaccineJson.get("specie"));
-                vaccine.setDuration((String) vaccineJson.get("duration"));
+                vaccine.setName((String) vaccineJson.get(managerProperties.getProperty("json.key.vaccine.name")));
+                vaccine.setSpecies((String) vaccineJson.get(managerProperties.getProperty("json.key.vaccine.specie")));
+                vaccine.setDuration((String) vaccineJson.get(managerProperties.getProperty("json.key.vaccine.duration")));
                 vaccinesList.add(vaccine);
             }
-
         }
     }
 
     private List<String> vaccineToJsonList() {
         jsonArrayVaccine = new ArrayList<>();
         for (Vaccine vaccine : vaccinesList) {
+            String jsonFormat = String.format("{\"%s\":\"%s\",\"%s\":\"%s\",\"%s\":\"%s\"}",
+                    managerProperties.getProperty("json.key.vaccine.name"), vaccine.getName(),
+                    managerProperties.getProperty("json.key.vaccine.specie"), vaccine.getSpecies(),
+                    managerProperties.getProperty("json.key.vaccine.duration"), vaccine.getDuration());
+    
             if (vaccinesList.indexOf(vaccine) != vaccinesList.size() - 1) {
-                jsonArrayVaccine.add(
-                        "{\"name\":\"" + vaccine.getName()
-                                + "\",\"specie\":\"" + vaccine.getSpecies()
-                                + "\",\"duration\":\"" + vaccine.getDuration() + "\"" + "}" + "," + "\n");
+                jsonArrayVaccine.add(jsonFormat + "," + "\n");
             } else {
-                jsonArrayVaccine.add(
-                        "{\"name\":\"" + vaccine.getName()
-                                + "\",\"specie\":\"" + vaccine.getSpecies()
-                                + "\",\"duration\":\"" + vaccine.getDuration() + "\"" + "}" + "\n");
+                jsonArrayVaccine.add(jsonFormat + "\n");
             }
         }
         return jsonArrayVaccine;
@@ -226,16 +222,12 @@ public class ManagerModel implements Contract.Model {
     }
 
     @Override
-    public List<Appointment> filterByDate() {
-        LocalDate date = LocalDate.now();
+    public List<Appointment> filterByDate(String date) {
         List<Appointment> fList = new ArrayList<>();
-        for (Appointment appointment : appointmentList) {
-            String dateStr = appointment.getDate();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate localDate = LocalDate.parse(dateStr, formatter);
-            if (localDate.isEqual(date)) {
+        for (Appointment appointment : appointmentList) { 
+            if (appointment.getDate().equals(date.toString())) {
                 fList.add(appointment);
-            }
+            }  
         }
         return fList;
     }
@@ -257,7 +249,7 @@ public class ManagerModel implements Contract.Model {
         for (Appointment appointment : appointmentList) {
             if (appointment.getVaccinesApplied() != null) {
                 for (Vaccine vaccine : appointment.getVaccinesApplied()) {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(managerProperties.getProperty("date.format"));
                     String dateString = appointment.getDate();
                     LocalDate vaccineDate = LocalDate.parse(dateString, formatter);
                     LocalDate newDate = vaccineDate.plusDays(Integer.parseInt(vaccine.getDuration()));

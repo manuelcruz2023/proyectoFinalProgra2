@@ -17,7 +17,7 @@ public interface Contract {
         public void writeListAppointment();
         public void writeListVaccine();
 
-        public List<Appointment> filterByDate();
+        public List<Appointment> filterByDate(String date);
         public List<Appointment> filterByResponsible(String documentNumber);
         public List<Appointment> filterByVaccineSoonToExpire();
     }
@@ -32,7 +32,7 @@ public interface Contract {
         public List<Vaccine> loadListVaccine();
         public void addVaccine(Vaccine vaccine);    
         
-        public List<Appointment> loadFilterByDate();
+        public List<Appointment> loadFilterByDate(String date);
         public List<Appointment> loadFilterByResponsible(String documentNumber);
         public List<Appointment> loadFilterByVaccineSoonToExpire();
 

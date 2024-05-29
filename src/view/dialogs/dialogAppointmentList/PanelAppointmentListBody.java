@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -41,6 +44,8 @@ public class PanelAppointmentListBody extends JPanel {
     private JButton buttonClearFilters;
     private String data;
     private JDateChooser dateChooser;
+    private Date date;
+    private LocalDate localDate;
 
     public PanelAppointmentListBody(DialogAppointmentListManager dialogAppointmentListManager) {
         this.dialogAppointmentListManager = dialogAppointmentListManager;
@@ -66,7 +71,7 @@ public class PanelAppointmentListBody extends JPanel {
     public List<Appointment> getListAppointments() {
         switch (selection) {
             case 1:
-                return dialogAppointmentListManager.panelMainFooter.mainView.getPresenter().loadFilterByDate();
+                return dialogAppointmentListManager.panelMainFooter.mainView.getPresenter().loadFilterByDate(localDate.toString());
             case 2:
                 return dialogAppointmentListManager.panelMainFooter.mainView.getPresenter()
                         .loadFilterByResponsible(data);
@@ -158,10 +163,8 @@ public class PanelAppointmentListBody extends JPanel {
                 createDialogApplyVacine();
             }
         });
-        JMenuItem menuItem2 = new JMenuItem("Eliminar cita");
         popupMenu.setPreferredSize(new Dimension(100, 50));
         popupMenu.add(menuItem1);
-        popupMenu.add(menuItem2);
         table.setComponentPopupMenu(popupMenu);
     }
 
@@ -181,9 +184,15 @@ public class PanelAppointmentListBody extends JPanel {
                 dateChooser.setPreferredSize(new Dimension(80, 20));
                 JPanel panel = new JPanel();
                 panel.add(dateChooser);
-                JOptionPane.showConfirmDialog(null, panel, "Seleccione una fecha", JOptionPane.OK_CANCEL_OPTION,
+                int result = JOptionPane.showConfirmDialog(null, panel, "Seleccione una fecha", JOptionPane.OK_CANCEL_OPTION,
                         JOptionPane.PLAIN_MESSAGE);
-                fillTableWithAppointments();
+                if (result == JOptionPane.OK_OPTION) {
+                    date = dateChooser.getDate();
+                    if (date != null) {
+                        localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    }
+                    fillTableWithAppointments();
+                }
             }
         });
     }
@@ -247,7 +256,7 @@ public class PanelAppointmentListBody extends JPanel {
 
     private void advice() {
         appointments = getListAppointments();
-        if (appointments.size() == 0||appointments==null) {
+        if (appointments == null) {
             JOptionPane.showMessageDialog(null, "No hay citas registradas", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }

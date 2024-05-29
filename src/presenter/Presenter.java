@@ -44,8 +44,8 @@ public class Presenter implements Contract.Presenter{
     }
 
     @Override
-    public List<Appointment> loadFilterByDate() {
-        return model.filterByDate();
+    public List<Appointment> loadFilterByDate(String date) {
+        return model.filterByDate(date);
     }
 
     @Override
