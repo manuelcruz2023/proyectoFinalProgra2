@@ -1,6 +1,8 @@
 package view.dialogs.dialogAppointment;
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JDialog;
 
@@ -19,6 +21,7 @@ public class DialogAppointmentManager extends JDialog {
         this.panelMainFooter = panelMainFooter;
         initDialog();
         addPanels();
+        clear();
     }
 
     private void initDialog() {
@@ -52,5 +55,20 @@ public class DialogAppointmentManager extends JDialog {
         addHeader();
         addBody();
         addFooter();
+    }
+
+    private void clear() {
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                panelAppointmentPanelBody.textFieldCompleteName.setText("");
+                panelAppointmentPanelBody.textFieldNumber.setText("");
+                panelAppointmentPanelBody.textFieldPetName.setText("");
+                panelAppointmentPanelBody.jComboBoxDocumentType.setSelectedItem(null);
+                panelAppointmentPanelBody.jComboBoxRelationship.setSelectedItem(null);
+                panelAppointmentPanelBody.jComboBoxPetSpeciesAndSex.setSelectedItem(null);
+            }
+        });
+        this.dispose();
     }
 }

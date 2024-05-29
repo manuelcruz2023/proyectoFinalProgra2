@@ -10,7 +10,7 @@ import javax.swing.JScrollPane;
 import pojos.Appointment;
 import view.GlobalConfigView;
 
-public class PanelAppointmentListFooter extends JPanel{
+public class PanelAppointmentListFooter extends JPanel {
 
     public DialogAppointmentListManager dialogAppointmentListManager;
     public List<Appointment> appointments;
@@ -35,7 +35,9 @@ public class PanelAppointmentListFooter extends JPanel{
     }
 
     public void labelInfo() {
-        labelInfo = new JLabel("Para aplicar una vacuna, seleccione una cita, presione el click derecho y haga clic en 'Aplicar Vacuna'");
+        labelInfo = new JLabel(
+                "<html>Para eliminar citas o para agregar vacunas asegurese de seleccionar la fila, presione el click derecho y luego haga clic en el botón correspondiente.</html>");
+        labelInfo.setPreferredSize(new Dimension(780, 60));
         labelInfo.setFont(GlobalConfigView.BASIC_FONT);
         labelInfo.setForeground(GlobalConfigView.FOOTER_TEXT_COLOR);
         this.add(labelInfo);

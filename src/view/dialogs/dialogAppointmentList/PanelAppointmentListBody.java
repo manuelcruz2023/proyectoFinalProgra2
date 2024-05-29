@@ -71,7 +71,8 @@ public class PanelAppointmentListBody extends JPanel {
     public List<Appointment> getListAppointments() {
         switch (selection) {
             case 1:
-                return dialogAppointmentListManager.panelMainFooter.mainView.getPresenter().loadFilterByDate(localDate.toString());
+                return dialogAppointmentListManager.panelMainFooter.mainView.getPresenter()
+                        .loadFilterByDate(localDate.toString());
             case 2:
                 return dialogAppointmentListManager.panelMainFooter.mainView.getPresenter()
                         .loadFilterByResponsible(data);
@@ -163,8 +164,21 @@ public class PanelAppointmentListBody extends JPanel {
                 createDialogApplyVacine();
             }
         });
+        JMenuItem menuItem2 = new JMenuItem("Eliminar cita");
+        menuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) { 
+                    DefaultTableModel model = (DefaultTableModel) table.getModel(); 
+                    model.removeRow(selectedRow);
+                    getListAppointments().remove(index);
+                    dialogAppointmentListManager.panelMainFooter.mainView.getPresenter().updateJsonAppointments();
+                }
+            }
+        });
         popupMenu.setPreferredSize(new Dimension(100, 50));
         popupMenu.add(menuItem1);
+        popupMenu.add(menuItem2);
         table.setComponentPopupMenu(popupMenu);
     }
 
@@ -184,7 +198,8 @@ public class PanelAppointmentListBody extends JPanel {
                 dateChooser.setPreferredSize(new Dimension(80, 20));
                 JPanel panel = new JPanel();
                 panel.add(dateChooser);
-                int result = JOptionPane.showConfirmDialog(null, panel, "Seleccione una fecha", JOptionPane.OK_CANCEL_OPTION,
+                int result = JOptionPane.showConfirmDialog(null, panel, "Seleccione una fecha",
+                        JOptionPane.OK_CANCEL_OPTION,
                         JOptionPane.PLAIN_MESSAGE);
                 if (result == JOptionPane.OK_OPTION) {
                     date = dateChooser.getDate();

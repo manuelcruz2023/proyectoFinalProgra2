@@ -1,18 +1,22 @@
-## Getting Started
+# Registro Veterinaria
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+App para añadir cita, añadir vacuna y registrar vacuna y permite llevar un registro de ello.
 
-## Folder Structure
+## Índice
 
-The workspace contains two folders by default, where:
+- [Requisitos](#requisitos)
+- [Uso](#uso)
+- [Autor](#autor)
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## Requisitos
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+- Java 21 o superior.
+- Sistema Operativo Windows.
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+## Uso
 
-## Dependency Management
+El proceso de ejecución en el IDE es sencillo, pero puede variar dependiendo del IDE que utilices. Para Visual Studio Code e IntelliJ IDEA, debes ejecutar el archivo `Main.java` ubicado en el directorio `src/Main.java`.
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## Autor
+
+Manuel Esteban Cruz
